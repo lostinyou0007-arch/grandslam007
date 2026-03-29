@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GrandSlam Shop | MLB Official Merchandise – USA · Japan · Korea</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#05101f;--navy2:#0a1a30;--card:#0d1e35;--red:#d81c2a;--red2:#ff2233;
+  --gold:#f0b429;--cream:#f0ece2;--steel:#6b7e96;--white:#fff;--border:rgba(255,255,255,0.07);
+  --font-h:'Bebas Neue',sans-serif;--font-b:'Barlow Condensed',sans-serif;
+  --font-jp:'Noto Sans JP',sans-serif;--font-kr:'Noto Sans KR',sans-serif;
+  --r:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--navy);color:var(--cream);font-family:var(--font-b);overflow-x:hidden;cursor:default;}
+body.cart-open{overflow:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;background:none;font-family:var(--font-b);}
+img{display:block;width:100%;height:100%;object-fit:cover;}
+.hidden{display:none!important;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px;}
+
+/* ── NOISE LAYER ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  opacity:.35;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
+
+/* ── CART OVERLAY ── */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  z-index:500;opacity:0;pointer-events:none;transition:opacity .3s;}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+
+/* ── CART SIDEBAR ── */
+.cart-sidebar{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;
+  background:#0e1f38;border-left:1px solid var(--border);z-index:600;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.cart-sidebar.open{transform:translateX(0);}
+.cart-head{padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;}
+.cart-head h2{font-family:var(--font-h);font-size:1.8rem;letter-spacing:1px;color:var(--white);}
+.cart-close{font-size:1.6rem;color:var(--steel);transition:color .2s;}
+.cart-close:hover{color:var(--red);}
+.cart-body{flex:1;overflow-y:auto;padding:1rem 1.6rem;}
+.cart-empty{text-align:center;padding:4rem 0;color:var(--steel);}
+.cart-empty .icon{font-size:3.5rem;margin-bottom:.8rem;}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);}
+.cart-item-img{width:70px;height:70px;background:var(--card);flex-shrink:0;
+  border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:.95rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:.3rem;}
+.cart-item-sub{font-size:.75rem;color:var(--steel);margin-bottom:.5rem;}
+.cart-item-price{font-family:var(--font-h);font-size:1.2rem;color:var(--gold);}
+.cart-qty{display:flex;align-items:center;gap:.5rem;margin-top:.4rem;}
+.cart-qty button{width:24px;height:24px;background:var(--border);color:var(--cream);
+  border-radius:2px;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.cart-qty button:hover{background:var(--red);}
+.cart-qty span{font-size:.9rem;min-width:20px;text-align:center;}
+.cart-remove{color:var(--steel);font-size:1.1rem;align-self:flex-start;transition:color .2s;}
+.cart-remove:hover{color:var(--red);}
+.cart-foot{padding:1.4rem 1.6rem;border-top:1px solid var(--border);}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.cart-total span{font-family:var(--font-h);font-size:1rem;letter-spacing:1px;color:var(--steel);}
+.cart-total strong{font-family:var(--font-h);font-size:1.8rem;color:var(--gold);}
+.cart-checkout{width:100%;background:var(--red);color:var(--white);padding:14px;
+  font-family:var(--font-h);font-size:1.3rem;letter-spacing:2px;transition:background .2s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);}
+.cart-checkout:hover{background:var(--red2);}
+.pay-methods{display:flex;flex-wrap:wrap;gap:6px;margin-top:.8rem;}
+.pay-chip{background:rgba(255,255,255,.06);border:1px solid var(--border);
+  padding:3px 10px;border-radius:2px;font-size:.7rem;color:var(--steel);font-weight:700;letter-spacing:1px;}
+.currency-row{display:flex;gap:6px;margin-bottom:1rem;}
+.cur-btn{flex:1;padding:6px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--steel);font-size:.8rem;font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.cur-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* ── PRODUCT MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);
+  z-index:700;display:flex;align-items:center;justify-content:center;padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#0e1f38;border:1px solid var(--border);width:100%;max-width:700px;
+  max-height:90vh;overflow-y:auto;position:relative;border-radius:var(--r);}
+.modal-close{position:absolute;top:1rem;right:1rem;font-size:1.5rem;color:var(--steel);
+  z-index:1;transition:color .2s;}
+.modal-close:hover{color:var(--red);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;}
+.modal-img{height:320px;overflow:hidden;position:relative;background:var(--card);}
+.modal-img img{width:100%;height:100%;object-fit:cover;}
+.modal-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.modal-info{padding:2rem 1.8rem;display:flex;flex-direction:column;gap:1rem;}
+.modal-badge{display:inline-block;font-size:.65rem;letter-spacing:2px;
+  padding:3px 10px;font-weight:800;text-transform:uppercase;margin-bottom:.3rem;}
+.modal-team{font-size:.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.modal-name{font-family:var(--font-h);font-size:1.8rem;color:var(--white);line-height:1.1;}
+.modal-name-local{font-size:.9rem;color:var(--steel);margin-top:.2rem;}
+.modal-price{font-family:var(--font-h);font-size:2rem;color:var(--gold);}
+.modal-price .old{font-size:1.1rem;color:var(--steel);text-decoration:line-through;margin-right:.5rem;}
+.modal-desc{font-size:.9rem;color:var(--steel);line-height:1.7;}
+.size-label{font-size:.7rem;letter-spacing:2px;color:var(--steel);text-transform:uppercase;margin-bottom:.5rem;}
+.sizes{display:flex;gap:.5rem;flex-wrap:wrap;}
+.size-btn{width:42px;height:42px;border:1px solid var(--border);color:var(--cream);
+  font-size:.85rem;font-weight:700;transition:all .2s;border-radius:2px;}
+.size-btn:hover,.size-btn.active{background:var(--red);border-color:var(--red);color:var(--white);}
+.qty-row{display:flex;align-items:center;gap:1rem;}
+.qty-ctrl{display:flex;align-items:center;gap:.6rem;}
+.qty-ctrl button{width:36px;height:36px;background:rgba(255,255,255,.06);color:var(--cream);
+  font-size:1.2rem;border-radius:2px;transition:background .2s;}
+.qty-ctrl button:hover{background:var(--red);}
+.qty-ctrl span{font-family:var(--font-h);font-size:1.4rem;min-width:28px;text-align:center;}
+.modal-add{flex:1;background:var(--red);color:var(--white);padding:12px;
+  font-family:var(--font-h);font-size:1.2rem;letter-spacing:2px;transition:background .2s;
+  border-radius:2px;}
+.modal-add:hover{background:var(--red2);}
+@media(max-width:600px){.modal-grid{grid-template-columns:1fr;}.modal-img{height:220px;}}
+
+/* ── NOTIFICATION TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#0e1f38;border:1px solid var(--red);border-left:4px solid var(--red);
+  padding:12px 22px;color:var(--white);font-size:.9rem;z-index:800;
+  transition:transform .3s ease;white-space:nowrap;border-radius:var(--r);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast b{color:var(--gold);}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;height:62px;
+  background:rgba(5,16,31,.97);backdrop-filter:blur(14px);
+  border-bottom:2px solid var(--red);
+  display:flex;align-items:center;gap:1.5rem;padding:0 2rem;}
+.nav-logo{font-family:var(--font-h);font-size:1.9rem;letter-spacing:2px;color:var(--white);
+  display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0;}
+.nav-logo span{color:var(--red);}
+.ball-icon{width:28px;height:28px;background:var(--white);border-radius:50%;position:relative;flex-shrink:0;}
+.ball-icon::before,.ball-icon::after{content:'';position:absolute;border:2px solid var(--red);
+  top:50%;transform:translateY(-50%);height:70%;width:40%;}
+.ball-icon::before{left:0;border-left:none;border-radius:0 50% 50% 0;}
+.ball-icon::after{right:0;border-right:none;border-radius:50% 0 0 50%;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;flex:1;}
+.nav-links a{font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--steel);transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-search{flex:1;max-width:260px;position:relative;}
+.nav-search input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--white);padding:7px 14px 7px 34px;font-family:var(--font-b);font-size:.85rem;
+  border-radius:var(--r);outline:none;transition:border-color .2s;}
+.nav-search input:focus{border-color:var(--red);}
+.nav-search input::placeholder{color:var(--steel);}
+.nav-search::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.75rem;}
+.lang-sw{display:flex;gap:4px;flex-shrink:0;}
+.lang-btn{padding:4px 10px;border:1px solid var(--border);color:var(--cream);
+  font-size:.72rem;font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.lang-btn.active,.lang-btn:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.cart-btn{position:relative;font-size:1.4rem;color:var(--cream);transition:color .2s;flex-shrink:0;}
+.cart-btn:hover{color:var(--gold);}
+.cart-cnt{position:absolute;top:-8px;right:-8px;background:var(--red);color:var(--white);
+  width:18px;height:18px;border-radius:50%;font-size:.6rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-b);}
+
+/* ── HERO ── */
+.hero{min-height:88vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%, rgba(0,60,120,.25) 0%, transparent 70%),
+             radial-gradient(ellipse at 10% 90%, rgba(208,28,42,.12) 0%, transparent 60%);
+  pointer-events:none;}
+.hero-stripes{position:absolute;right:0;top:0;bottom:0;width:55%;
+  background:repeating-linear-gradient(-45deg,rgba(255,255,255,.012) 0,rgba(255,255,255,.012) 1px,transparent 1px,transparent 22px);
+  pointer-events:none;}
+.hero-l{padding:7rem 3.5rem 5rem;display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;}
+.hero-tag{font-size:.72rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;margin-bottom:1.6rem;}
+.hero-tag::before{content:'';width:36px;height:2px;background:var(--gold);display:block;}
+.hero-h1{font-family:var(--font-h);font-size:clamp(4.5rem,8vw,7.5rem);line-height:.9;
+  color:var(--white);margin-bottom:.8rem;}
+.hero-h1 .r{color:var(--red);}
+.hero-h1 .o{-webkit-text-stroke:2px var(--white);color:transparent;}
+.hero-sub{font-size:1.05rem;color:var(--steel);max-width:400px;line-height:1.7;font-weight:400;}
+.hero-ctas{margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-r{background:var(--red);color:var(--white);padding:14px 36px;font-family:var(--font-h);
+  font-size:1.2rem;letter-spacing:2px;transition:all .2s;display:inline-block;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);}
+.btn-r:hover{background:var(--red2);transform:translateY(-2px);}
+.btn-o{border:2px solid var(--cream);color:var(--cream);padding:12px 30px;font-family:var(--font-h);
+  font-size:1.2rem;letter-spacing:2px;transition:all .2s;display:inline-block;}
+.btn-o:hover{background:var(--cream);color:var(--navy);}
+.hero-stats{margin-top:3.5rem;display:flex;gap:3rem;}
+.stat-n{font-family:var(--font-h);font-size:2.6rem;color:var(--gold);display:block;}
+.stat-l{font-size:.7rem;letter-spacing:2px;color:var(--steel);text-transform:uppercase;}
+.hero-r{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+/* SVG baseball animation */
+.hero-ball-wrap{position:relative;animation:floatY 5s ease-in-out infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-18px) rotate(6deg);}}
+.hero-ball-svg{width:360px;height:360px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));}
+.badge-float{position:absolute;font-family:var(--font-h);font-size:.9rem;letter-spacing:1px;
+  padding:7px 16px;background:var(--red);color:var(--white);}
+.badge-float.t{top:60px;right:-10px;clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px);}
+.badge-float.b{bottom:70px;left:-10px;background:var(--gold);color:var(--navy);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);}
+
+/* ── TICKER ── */
+.ticker{background:var(--red);overflow:hidden;white-space:nowrap;padding:10px 0;
+  border-top:1px solid #ff3344;border-bottom:1px solid #9a0010;}
+.ticker-inner{display:inline-block;animation:tick 35s linear infinite;
+  font-family:var(--font-h);font-size:1rem;letter-spacing:3px;color:var(--white);}
+.ticker-inner span{margin-right:3rem;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── TEAMS STRIP ── */
+.teams-section{background:var(--card);border-bottom:1px solid var(--border);padding:2rem 2rem;}
+.teams-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+.teams-header h3{font-family:var(--font-h);font-size:1.4rem;color:var(--white);letter-spacing:1px;}
+.div-filters{display:flex;gap:.4rem;flex-wrap:wrap;}
+.div-btn{padding:5px 12px;border:1px solid var(--border);color:var(--steel);font-size:.7rem;
+  font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.div-btn.active,.div-btn:hover{background:rgba(208,28,42,.2);border-color:var(--red);color:var(--white);}
+.teams-scroll{display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;}
+.team-chip{display:flex;align-items:center;gap:.5rem;padding:8px 14px;white-space:nowrap;
+  border:1px solid var(--border);color:var(--steel);font-size:.8rem;font-weight:700;
+  letter-spacing:1px;transition:all .2s;cursor:pointer;flex-shrink:0;border-radius:2px;}
+.team-chip:hover,.team-chip.active{background:rgba(208,28,42,.15);border-color:var(--red);color:var(--white);}
+.team-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* ── SECTION ── */
+.sec{padding:5rem 2rem;}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;}
+.sec-lbl{font-size:.7rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:.4rem;}
+.sec-lbl::before{content:'';width:20px;height:2px;background:var(--gold);display:block;}
+.sec-ttl{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,4rem);color:var(--white);line-height:1;}
+
+/* ── FILTERS BAR ── */
+.filters-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.flt{padding:7px 16px;border:1px solid var(--border);color:var(--steel);font-size:.78rem;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all .2s;border-radius:2px;}
+.flt.active,.flt:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.sort-sel{padding:7px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--steel);font-family:var(--font-b);font-size:.78rem;font-weight:700;
+  letter-spacing:1px;border-radius:2px;outline:none;}
+.sort-sel option{background:var(--navy2);color:var(--cream);}
+.results-count{font-size:.8rem;color:var(--steel);margin-left:auto;}
+
+/* ── PRODUCT GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.4rem;}
+.product-card{background:var(--card);border:1px solid var(--border);overflow:hidden;
+  cursor:pointer;transition:transform .25s,border-color .25s;position:relative;}
+.product-card:hover{transform:translateY(-5px);border-color:rgba(208,28,42,.5);}
+.product-card:hover .pc-overlay{opacity:1;}
+.pc-img{height:200px;position:relative;overflow:hidden;background:var(--navy2);}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.product-card:hover .pc-img img{transform:scale(1.05);}
+.pc-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:5rem;background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));}
+.pc-overlay{position:absolute;inset:0;background:rgba(5,16,31,.7);display:flex;
+  align-items:center;justify-content:center;opacity:0;transition:opacity .25s;}
+.pc-overlay-btn{background:var(--white);color:var(--navy);padding:9px 22px;
+  font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;}
+.pc-badge{position:absolute;top:10px;left:10px;font-size:.62rem;letter-spacing:2px;
+  padding:3px 10px;font-weight:800;text-transform:uppercase;}
+.pc-badge.new{background:var(--gold);color:var(--navy);}
+.pc-badge.sale{background:var(--red);color:var(--white);}
+.pc-badge.hot{background:#ff6b00;color:var(--white);}
+.pc-badge.kr{background:#003478;color:var(--white);}
+.pc-badge.jp{background:#bc002d;color:var(--white);}
+.pc-wish{position:absolute;top:10px;right:10px;font-size:1.1rem;cursor:pointer;
+  transition:transform .2s;filter:grayscale(1);opacity:.5;}
+.pc-wish.liked{filter:none;opacity:1;transform:scale(1.2);}
+.pc-body{padding:1.1rem;}
+.pc-team{font-size:.65rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:.3rem;}
+.pc-name{font-family:var(--font-h);font-size:1.3rem;color:var(--white);line-height:1.1;margin-bottom:.2rem;}
+.pc-local{font-size:.8rem;color:var(--steel);margin-bottom:.7rem;}
+.pc-foot{display:flex;align-items:center;justify-content:space-between;}
+.pc-price{font-family:var(--font-h);font-size:1.5rem;color:var(--gold);}
+.pc-price .old{font-size:.9rem;color:var(--steel);text-decoration:line-through;margin-right:4px;}
+.pc-cart{width:36px;height:36px;background:var(--red);color:var(--white);font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:2px;}
+.pc-cart:hover{background:var(--red2);}
+
+/* Load more */
+.load-more-row{text-align:center;margin-top:3rem;}
+
+/* ── FEATURED BANNER ── */
+.featured-banner{background:linear-gradient(135deg,#0a1a30 0%,#1a0a12 100%);
+  border:1px solid var(--border);padding:3rem;margin:3rem 0;display:grid;
+  grid-template-columns:1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;}
+.featured-banner::before{content:'⚾';position:absolute;right:-20px;bottom:-30px;
+  font-size:12rem;opacity:.04;pointer-events:none;}
+.fb-tag{font-size:.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem;}
+.fb-title{font-family:var(--font-h);font-size:2.5rem;color:var(--white);line-height:1.1;margin-bottom:.5rem;}
+.fb-sub{color:var(--steel);font-size:.9rem;line-height:1.6;max-width:500px;}
+.fb-right{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;}
+.fb-price{font-family:var(--font-h);font-size:3rem;color:var(--gold);}
+.fb-price small{font-size:1.2rem;color:var(--steel);text-decoration:line-through;display:block;text-align:right;}
+
+/* ── REGIONS ── */
+#regions{background:var(--navy2);border-top:1px solid var(--border);}
+.regions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.region-card{border:1px solid var(--border);padding:2.5rem 2rem;position:relative;
+  overflow:hidden;transition:border-color .25s,transform .25s;cursor:default;}
+.region-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+.region-card::after{content:attr(data-flag);position:absolute;right:-12px;top:-12px;
+  font-size:7rem;opacity:.1;pointer-events:none;line-height:1;}
+.rg-name{font-family:var(--font-h);font-size:2.8rem;color:var(--white);margin-bottom:.2rem;}
+.rg-local{font-size:1.3rem;color:var(--gold);margin-bottom:.8rem;}
+.rg-shipping{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--gold);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem;}
+.rg-shipping::before{content:'✓';background:var(--gold);color:var(--navy);
+  width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:900;flex-shrink:0;}
+.rg-desc{font-size:.88rem;color:var(--steel);line-height:1.7;margin-bottom:1rem;}
+.rg-tags{display:flex;gap:.4rem;flex-wrap:wrap;}
+.rg-tag{font-size:.65rem;letter-spacing:1px;border:1px solid var(--border);color:var(--steel);
+  padding:3px 9px;text-transform:uppercase;border-radius:2px;}
+.rg-currencies{margin-top:1rem;display:flex;gap:.5rem;}
+.cur-display{background:rgba(255,255,255,.04);padding:4px 12px;border-radius:2px;
+  font-size:.75rem;color:var(--cream);font-weight:700;}
+
+/* ── NEWSLETTER ── */
+.newsletter{background:linear-gradient(135deg,#150810 0%,#050d1a 50%,#0a1628 100%);
+  padding:6rem 2rem;text-align:center;position:relative;overflow:hidden;
+  border-top:2px solid var(--red);}
+.newsletter::before{content:'⚾';position:absolute;left:-80px;bottom:-60px;font-size:28rem;
+  opacity:.025;pointer-events:none;line-height:1;}
+.nl-title{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,5rem);color:var(--white);margin-bottom:.5rem;}
+.nl-sub{color:var(--steel);font-size:.95rem;max-width:460px;margin:0 auto 2.5rem;line-height:1.7;}
+.nl-form{display:flex;max-width:460px;margin:0 auto;}
+.nl-form input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-right:none;color:var(--white);padding:14px 18px;font-family:var(--font-b);
+  font-size:.9rem;outline:none;}
+.nl-form input::placeholder{color:var(--steel);}
+.nl-form input:focus{border-color:var(--red);}
+.nl-form button{background:var(--red);color:var(--white);padding:14px 28px;
+  font-family:var(--font-h);font-size:1.1rem;letter-spacing:2px;transition:background .2s;}
+.nl-form button:hover{background:var(--red2);}
+.nl-perks{display:flex;justify-content:center;gap:3rem;margin-top:2.5rem;flex-wrap:wrap;}
+.nl-perk{text-align:center;color:var(--steel);font-size:.8rem;}
+.nl-perk span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
+
+/* ── FOOTER ── */
+footer{background:#030b17;border-top:1px solid var(--border);padding:4rem 2rem 2rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem;}
+.footer-brand p{color:var(--steel);font-size:.85rem;line-height:1.7;max-width:240px;margin-top:.8rem;}
+.footer-col h4{font-family:var(--font-h);font-size:1rem;color:var(--white);letter-spacing:2px;
+  margin-bottom:1rem;text-transform:uppercase;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:.5rem;}
+.footer-col ul a{color:var(--steel);font-size:.85rem;transition:color .2s;display:inline-block;}
+.footer-col ul a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-bottom p{color:var(--steel);font-size:.75rem;}
+.crypto-row{display:flex;gap:6px;flex-wrap:wrap;}
+.crypto-chip{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  padding:3px 10px;border-radius:2px;font-size:.68rem;color:var(--steel);font-weight:700;letter-spacing:1px;}
+
+/* ── FADE ANIM ── */
+.fi{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.fi.v{opacity:1;transform:translateY(0);}
+
+/* ── LANGUAGE TEXT ── */
+.t{display:none;}
+body.lang-en .t.en{display:inline;}
+body.lang-jp .t.jp{display:inline;}
+body.lang-kr .t.kr{display:inline;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.footer-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}.hero-r{display:none;}
+  .hero-l{padding:4rem 1.5rem;}
+  nav{padding:0 1rem;gap:1rem;}.nav-links,.nav-search{display:none;}
+  .regions-grid{grid-template-columns:1fr;}
+  .featured-banner{grid-template-columns:1fr;}.fb-right{align-items:flex-start;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .sec{padding:3rem 1rem;}.teams-section{padding:1.5rem 1rem;}
+  .footer-grid{grid-template-columns:1fr;}
+  .nl-form{flex-direction:column;}
+  .nl-form input{border-right:1px solid var(--border);border-bottom:none;}
+}
+</style>
+</head>
+<body class="lang-en">
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- CART SIDEBAR -->
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <h2>🛒 <span class="t en">YOUR CART</span><span class="t jp">カート</span><span class="t kr">장바구니</span></h2>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="icon">⚾</div>
+      <p><span class="t en">Your cart is empty.<br/>Start shopping!</span><span class="t jp">カートが空です。ショッピングを始めましょう！</span><span class="t kr">장바구니가 비었습니다. 쇼핑을 시작하세요!</span></p>
+    </div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="cart-foot">
+    <div class="currency-row">
+      <button class="cur-btn active" onclick="setCurrency('USD',this)">$ USD</button>
+      <button class="cur-btn" onclick="setCurrency('JPY',this)">¥ JPY</button>
+      <button class="cur-btn" onclick="setCurrency('KRW',this)">₩ KRW</button>
+    </div>
+    <div class="cart-total">
+      <span><span class="t en">TOTAL</span><span class="t jp">合計</span><span class="t kr">합계</span></span>
+      <strong id="cartTotal">$0.00</strong>
+    </div>
+    <button class="cart-checkout" onclick="checkout()">
+      <span class="t en">CHECKOUT →</span><span class="t jp">チェックアウト →</span><span class="t kr">결제하기 →</span>
+    </button>
+    <div class="pay-methods">
+      <span class="pay-chip">VISA</span><span class="pay-chip">MC</span><span class="pay-chip">AMEX</span>
+      <span class="pay-chip">PayPal</span><span class="pay-chip">카카오Pay</span><span class="pay-chip">PayPay</span>
+      <span class="pay-chip">₿ BTC</span><span class="pay-chip">ETH</span><span class="pay-chip">USDT</span>
+    </div>
+  </div>
+</aside>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-grid">
+      <div class="modal-img" id="modalImg"></div>
+      <div class="modal-info" id="modalInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="ball-icon"></div>
+    GRAND<span>SLAM</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#shop"><span class="t en">Shop</span><span class="t jp">ショップ</span><span class="t kr">쇼핑</span></a></li>
+    <li><a href="#regions"><span class="t en">Shipping</span><span class="t jp">配送</span><span class="t kr">배송</span></a></li>
+    <li><a href="#newsletter"><span class="t en">Deals</span><span class="t jp">セール</span><span class="t kr">딜</span></a></li>
+  </ul>
+  <div class="nav-search">
+    <input type="text" id="searchInput" placeholder="Search jerseys, caps, bats…" oninput="doSearch()"/>
+  </div>
+  <div class="lang-sw">
+    <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+    <button class="lang-btn" onclick="setLang('jp',this)">JP</button>
+    <button class="lang-btn" onclick="setLang('kr',this)">KR</button>
+  </div>
+  <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-cnt" id="cartCnt">0</span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripes"></div>
+  <div class="hero-l fi">
+    <div class="hero-tag"><span class="t en">Official MLB Merchandise Store</span><span class="t jp">MLB公式グッズストア</span><span class="t kr">MLB 공식 굿즈 스토어</span></div>
+    <h1 class="hero-h1">
+      <span class="t en">GRAND<br/><span class="r">SLAM</span><br/><span class="o">SHOP</span></span>
+      <span class="t jp">グランド<br/><span class="r">スラム</span><br/><span class="o">ショップ</span></span>
+      <span class="t kr">그랜드<br/><span class="r">슬램</span><br/><span class="o">샵</span></span>
+    </h1>
+    <p class="hero-sub">
+      <span class="t en">50+ authentic MLB products. Bats, gloves, jerseys, caps, full kits & collectibles — delivered to USA, Japan & Korea.</span>
+      <span class="t jp">50以上の正規MLBグッズ。バット・グローブ・ジャージ・キャップ・フルキット。USA・日本・韓国へ発送。</span>
+      <span class="t kr">50개 이상의 정품 MLB 상품. 배트, 글러브, 저지, 모자, 풀킷 — 미국, 일본, 한국 배송.</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="#shop" class="btn-r"><span class="t en">Shop Now</span><span class="t jp">今すぐ購入</span><span class="t kr">지금 쇼핑</span></a>
+      <a href="#regions" class="btn-o"><span class="t en">Shipping Info</span><span class="t jp">配送情報</span><span class="t kr">배송 정보</span></a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-n">30</span><span class="stat-l"><span class="t en">MLB Teams</span><span class="t jp">チーム</span><span class="t kr">팀</span></span></div>
+      <div><span class="stat-n">50+</span><span class="stat-l"><span class="t en">Products</span><span class="t jp">商品</span><span class="t kr">상품</span></span></div>
+      <div><span class="stat-n">3</span><span class="stat-l"><span class="t en">Countries</span><span class="t jp">配送国</span><span class="t kr">국가</span></span></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="hero-ball-wrap">
+      <!-- Custom SVG Baseball -->
+      <svg class="hero-ball-svg" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ballGrad" cx="38%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#f0ece2"/>
+            <stop offset="100%" stop-color="#c8bfb0"/>
+          </radialGradient>
+          <filter id="bshadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="20" stdDeviation="25" flood-color="rgba(0,0,0,0.6)"/>
+          </filter>
+        </defs>
+        <circle cx="180" cy="180" r="160" fill="url(#ballGrad)" filter="url(#bshadow)"/>
+        <!-- Left seam -->
+        <path d="M 60 120 C 80 140, 90 160, 85 180 C 80 200, 70 215, 85 235" fill="none" stroke="#d81c2a" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 55 125 C 75 145, 85 165, 80 185 C 75 205, 65 220, 80 240" fill="none" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5,4"/>
+        <!-- Left stitches -->
+        <line x1="60" y1="130" x2="78" y2="128" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="62" y1="145" x2="80" y2="148" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="65" y1="160" x2="83" y2="165" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="66" y1="175" x2="83" y2="180" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="65" y1="190" x2="82" y2="193" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="62" y1="205" x2="78" y2="210" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="62" y1="220" x2="77" y2="226" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <!-- Right seam -->
+        <path d="M 300 120 C 280 140, 270 160, 275 180 C 280 200, 290 215, 275 235" fill="none" stroke="#d81c2a" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 305 125 C 285 145, 275 165, 280 185 C 285 205, 295 220, 280 240" fill="none" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5,4"/>
+        <!-- Right stitches -->
+        <line x1="300" y1="130" x2="282" y2="128" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="298" y1="145" x2="280" y2="148" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="295" y1="160" x2="277" y2="165" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="294" y1="175" x2="277" y2="180" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="295" y1="190" x2="278" y2="193" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="298" y1="205" x2="282" y2="210" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="298" y1="220" x2="283" y2="226" stroke="#d81c2a" stroke-width="3" stroke-linecap="round"/>
+        <!-- Shine -->
+        <ellipse cx="130" cy="130" rx="28" ry="18" fill="white" opacity="0.22" transform="rotate(-35 130 130)"/>
+      </svg>
+      <div class="badge-float t">⚾ 2025 SEASON</div>
+      <div class="badge-float b">🔥 NEW ARRIVALS</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner"></div>
+</div>
+
+<!-- ALL 30 TEAMS STRIP -->
+<div class="teams-section">
+  <div class="teams-header">
+    <h3><span class="t en">ALL 30 MLB TEAMS</span><span class="t jp">MLB全30チーム</span><span class="t kr">MLB 30개 팀 전체</span></h3>
+    <div class="div-filters" id="divFilters"></div>
+  </div>
+  <div class="teams-scroll" id="teamsScroll"></div>
+</div>
+
+<!-- SHOP -->
+<section class="sec" id="shop">
+  <div class="sec-hd fi">
+    <div>
+      <div class="sec-lbl"><span class="t en">Our Collection</span><span class="t jp">コレクション</span><span class="t kr">컬렉션</span></div>
+      <h2 class="sec-ttl"><span class="t en">GEAR UP NOW</span><span class="t jp">今すぐ装備</span><span class="t kr">지금 준비하세요</span></h2>
+    </div>
+  </div>
+  <div class="filters-bar" id="filtersBar" style="margin-bottom:1.5rem;"></div>
+  <div id="resultsRow" style="margin-bottom:1rem;"></div>
+  <!-- Featured Banner -->
+  <div class="featured-banner fi" id="featBanner">
+    <div>
+      <div class="fb-tag"><span class="t en">⚡ Limited Time Offer</span><span class="t jp">⚡ 期間限定</span><span class="t kr">⚡ 한정 시간 특가</span></div>
+      <div class="fb-title"><span class="t en">DODGERS OHTANI<br/>FAN PACK</span><span class="t jp">ドジャース 大谷<br/>ファンパック</span><span class="t kr">다저스 오타니<br/>팬 팩</span></div>
+      <div class="fb-sub"><span class="t en">Jersey + Cap + Baseball — the complete Ohtani fan experience. Ships to USA, Japan & Korea within 7 days.</span><span class="t jp">ジャージ+キャップ+ボール — 大谷ファンに最高のセット。7日以内に発送。</span><span class="t kr">저지 + 모자 + 야구공 — 오타니 팬을 위한 완벽한 세트. 7일 이내 배송.</span></div>
+    </div>
+    <div class="fb-right">
+      <div class="fb-price"><small>$229.99</small>$179.99</div>
+      <button class="btn-r" onclick="addFeatured()"><span class="t en">ADD TO CART</span><span class="t jp">カートに追加</span><span class="t kr">장바구니 추가</span></button>
+    </div>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+  <div class="load-more-row">
+    <button class="btn-r" id="loadMoreBtn" onclick="loadMore()"><span class="t en">LOAD MORE PRODUCTS</span><span class="t jp">もっと表示</span><span class="t kr">더 보기</span></button>
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section class="sec" id="regions">
+  <div class="sec-hd fi">
+    <div>
+      <div class="sec-lbl"><span class="t en">Worldwide Delivery</span><span class="t jp">全世界配送</span><span class="t kr">전 세계 배송</span></div>
+      <h2 class="sec-ttl"><span class="t en">WE SHIP TO</span><span class="t jp">配送先</span><span class="t kr">배송 지역</span></h2>
+    </div>
+  </div>
+  <div class="regions-grid">
+    <div class="region-card fi" data-flag="🇺🇸">
+      <div class="rg-name">USA</div>
+      <div class="rg-local">United States</div>
+      <div class="rg-shipping"><span class="t en">Free shipping over $75</span><span class="t jp">$75以上送料無料</span><span class="t kr">$75 이상 무료배송</span></div>
+      <p class="rg-desc"><span class="t en">Nationwide delivery in 2–5 business days. Express 2-day available. 30-day returns. All 30 MLB teams stocked.</span><span class="t jp">全米2〜5営業日でお届け。速達2日対応。30日返品可能。全30チーム取扱中。</span><span class="t kr">전국 2~5 영업일 배송. 빠른 2일 배송 가능. 30일 반품. 30개 팀 전체 취급.</span></p>
+      <div class="rg-tags"><span class="rg-tag">All 30 Teams</span><span class="rg-tag">Same-Day NYC</span><span class="rg-tag">UPS/FedEx</span></div>
+      <div class="rg-currencies"><span class="cur-display">$ USD</span></div>
+    </div>
+    <div class="region-card fi" data-flag="🇯🇵" style="font-family:var(--font-jp)">
+      <div class="rg-name">JAPAN</div>
+      <div class="rg-local">日本</div>
+      <div class="rg-shipping"><span class="t en">Shipping from $12</span><span class="t jp">$12から送料</span><span class="t kr">$12부터 배송</span></div>
+      <p class="rg-desc"><span class="t en">5–10 business days. Ohtani, Yoshida & all Japanese player gear. Japanese packaging available. Yamato logistics partner.</span><span class="t jp">5〜10営業日。大谷・吉田・菊池など日本人選手グッズ多数。日本語パッケージ対応。ヤマト便提携。</span><span class="t kr">5~10 영업일. 오타니, 요시다 등 일본 선수 굿즈. 일본어 패키지 가능.</span></p>
+      <div class="rg-tags"><span class="rg-tag">大谷 Ohtani</span><span class="rg-tag">吉田 Yoshida</span><span class="rg-tag">Yamato</span></div>
+      <div class="rg-currencies"><span class="cur-display">¥ JPY</span><span class="cur-display">PayPay</span></div>
+    </div>
+    <div class="region-card fi" data-flag="🇰🇷" style="font-family:var(--font-kr)">
+      <div class="rg-name">KOREA</div>
+      <div class="rg-local">대한민국</div>
+      <div class="rg-shipping"><span class="t en">Shipping from $10</span><span class="t jp">$10から送料</span><span class="t kr">$10부터 배송</span></div>
+      <p class="rg-desc"><span class="t en">5–8 business days to Seoul and nationwide. Ha-seong Kim, Hyun-jin Ryu merchandise. Korean packaging. CJ Logistics.</span><span class="t jp">ソウルほか全土5〜8営業日。キム・ハソン、リュ・ヒョンジン選手グッズ。韓国語パッケージ対応。</span><span class="t kr">서울 및 전국 5~8 영업일. 김하성, 류현진 굿즈. 한국어 패키지. CJ 물류.</span></p>
+      <div class="rg-tags"><span class="rg-tag">김하성 Ha-seong</span><span class="rg-tag">류현진 Ryu</span><span class="rg-tag">CJ대한통운</span></div>
+      <div class="rg-currencies"><span class="cur-display">₩ KRW</span><span class="cur-display">카카오페이</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter" id="newsletter">
+  <h2 class="nl-title fi"><span class="t en">JOIN THE LINEUP</span><span class="t jp">メルマガ登録</span><span class="t kr">뉴스레터 구독</span></h2>
+  <p class="nl-sub fi"><span class="t en">Get 10% off your first order, early access to new arrivals, and exclusive MLB deals straight to your inbox.</span><span class="t jp">初回注文10%オフ、新着先行案内、限定セール情報をお届けします。</span><span class="t kr">첫 주문 10% 할인, 신상품 선공개, 독점 MLB 특가 소식을 받아보세요.</span></p>
+  <form class="nl-form" onsubmit="subscribe(event)">
+    <input type="email" id="nlEmail" placeholder="your@email.com" required/>
+    <button type="submit"><span class="t en">SUBSCRIBE</span><span class="t jp">登録</span><span class="t kr">구독</span></button>
+  </form>
+  <div class="nl-perks">
+    <div class="nl-perk"><span>🚚</span><span class="t en">Free Shipping</span><span class="t jp">送料無料</span><span class="t kr">무료배송</span></div>
+    <div class="nl-perk"><span>🔄</span><span class="t en">Easy Returns</span><span class="t jp">簡単返品</span><span class="t kr">간편 반품</span></div>
+    <div class="nl-perk"><span>🏆</span><span class="t en">Authentic MLB</span><span class="t jp">正規MLB</span><span class="t kr">정품 MLB</span></div>
+    <div class="nl-perk"><span>⚡</span><span class="t en">Early Access</span><span class="t jp">先行販売</span><span class="t kr">선행 구매</span></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:.5rem;"><div class="ball-icon" style="width:22px;height:22px;"></div>GRAND<span>SLAM</span></div>
+      <p><span class="t en">Official MLB licensed merchandise. Serving fans across USA, Japan & Korea since 2024. All products 100% authentic.</span><span class="t jp">MLB公式ライセンス商品。米国・日本・韓国のファンへ2024年より。全品100%本物保証。</span><span class="t kr">MLB 공식 라이선스 상품. 2024년부터 미국·일본·한국 팬들에게. 모든 상품 100% 정품.</span></p>
+    </div>
+    <div class="footer-col">
+      <h4><span class="t en">Shop</span><span class="t jp">ショップ</span><span class="t kr">쇼핑</span></h4>
+      <ul>
+        <li><a href="#">Jerseys / ジャージ</a></li>
+        <li><a href="#">Caps / キャップ</a></li>
+        <li><a href="#">Bats / バット</a></li>
+        <li><a href="#">Gloves / グローブ</a></li>
+        <li><a href="#">Balls / ボール</a></li>
+        <li><a href="#">Full Kits / フルキット</a></li>
+        <li><a href="#">Collectibles</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4><span class="t en">Teams</span><span class="t jp">チーム</span><span class="t kr">팀</span></h4>
+      <ul>
+        <li><a href="#">NY Yankees</a></li>
+        <li><a href="#">LA Dodgers</a></li>
+        <li><a href="#">Boston Red Sox</a></li>
+        <li><a href="#">Chicago Cubs</a></li>
+        <li><a href="#">Houston Astros</a></li>
+        <li><a href="#">Seattle Mariners</a></li>
+        <li><a href="#">→ All 30 Teams</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4><span class="t en">Help</span><span class="t jp">サポート</span><span class="t kr">도움말</span></h4>
+      <ul>
+        <li><a href="#"><span class="t en">Size Guide</span><span class="t jp">サイズガイド</span><span class="t kr">사이즈 가이드</span></a></li>
+        <li><a href="#"><span class="t en">Shipping Info</span><span class="t jp">配送情報</span><span class="t kr">배송 정보</span></a></li>
+        <li><a href="#"><span class="t en">Returns</span><span class="t jp">返品</span><span class="t kr">반품</span></a></li>
+        <li><a href="#"><span class="t en">Track Order</span><span class="t jp">追跡</span><span class="t kr">주문 추적</span></a></li>
+        <li><a href="#"><span class="t en">Contact</span><span class="t jp">お問合せ</span><span class="t kr">문의</span></a></li>
+        <li><a href="#"><span class="t en">FAQ</span><span class="t jp">よくある質問</span><span class="t kr">자주 묻는 질문</span></a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4><span class="t en">Follow</span><span class="t jp">フォロー</span><span class="t kr">팔로우</span></h4>
+      <ul>
+        <li><a href="#">📸 Instagram</a></li>
+        <li><a href="#">🐦 Twitter / X</a></li>
+        <li><a href="#">▶️ YouTube</a></li>
+        <li><a href="#">💬 LINE (Japan)</a></li>
+        <li><a href="#">💬 KakaoTalk (Korea)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 GrandSlam Shop. <span class="t en">All rights reserved. MLB trademarks used under official license.</span><span class="t jp">全著作権所有。MLBの商標はライセンスの下で使用。</span><span class="t kr">모든 권리 보유. MLB 상표는 공식 라이선스 하에 사용됩니다.</span></p>
+    <div class="crypto-row">
+      <span class="crypto-chip">VISA</span><span class="crypto-chip">MC</span><span class="crypto-chip">AMEX</span>
+      <span class="crypto-chip">PayPal</span><span class="crypto-chip">카카오Pay</span><span class="crypto-chip">PayPay</span>
+      <span class="crypto-chip">₿ Bitcoin</span><span class="crypto-chip">Ξ Ethereum</span><span class="crypto-chip">◎ Solana</span><span class="crypto-chip">₮ USDT</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+
+const TEAMS = [
+  {id:'NYY',name:'New York Yankees',color:'#003087',div:'AL East'},
+  {id:'BOS',name:'Boston Red Sox',color:'#BD3039',div:'AL East'},
+  {id:'TOR',name:'Toronto Blue Jays',color:'#134A8E',div:'AL East'},
+  {id:'TB',name:'Tampa Bay Rays',color:'#092C5C',div:'AL East'},
+  {id:'BAL',name:'Baltimore Orioles',color:'#DF4601',div:'AL East'},
+  {id:'CWS',name:'Chicago White Sox',color:'#27251F',div:'AL Central'},
+  {id:'CLE',name:'Cleveland Guardians',color:'#00385D',div:'AL Central'},
+  {id:'DET',name:'Detroit Tigers',color:'#0C2340',div:'AL Central'},
+  {id:'KC',name:'Kansas City Royals',color:'#004687',div:'AL Central'},
+  {id:'MIN',name:'Minnesota Twins',color:'#002B5C',div:'AL Central'},
+  {id:'HOU',name:'Houston Astros',color:'#002D62',div:'AL West'},
+  {id:'LAA',name:'Los Angeles Angels',color:'#BA0021',div:'AL West'},
+  {id:'SEA',name:'Seattle Mariners',color:'#0C2C56',div:'AL West'},
+  {id:'OAK',name:'Oakland Athletics',color:'#003831',div:'AL West'},
+  {id:'TEX',name:'Texas Rangers',color:'#003278',div:'AL West'},
+  {id:'NYM',name:'New York Mets',color:'#002D72',div:'NL East'},
+  {id:'PHI',name:'Philadelphia Phillies',color:'#E81828',div:'NL East'},
+  {id:'ATL',name:'Atlanta Braves',color:'#CE1141',div:'NL East'},
+  {id:'MIA',name:'Miami Marlins',color:'#00A3E0',div:'NL East'},
+  {id:'WSH',name:'Washington Nationals',color:'#AB0003',div:'NL East'},
+  {id:'CHC',name:'Chicago Cubs',color:'#0E3386',div:'NL Central'},
+  {id:'STL',name:'St. Louis Cardinals',color:'#C41E3A',div:'NL Central'},
+  {id:'MIL',name:'Milwaukee Brewers',color:'#12284B',div:'NL Central'},
+  {id:'CIN',name:'Cincinnati Reds',color:'#C6011F',div:'NL Central'},
+  {id:'PIT',name:'Pittsburgh Pirates',color:'#27251F',div:'NL Central'},
+  {id:'LAD',name:'Los Angeles Dodgers',color:'#005A9C',div:'NL West'},
+  {id:'SFG',name:'San Francisco Giants',color:'#FD5A1E',div:'NL West'},
+  {id:'SD',name:'San Diego Padres',color:'#2F241D',div:'NL West'},
+  {id:'COL',name:'Colorado Rockies',color:'#33006F',div:'NL West'},
+  {id:'ARI',name:'Arizona Diamondbacks',color:'#A71930',div:'NL West'},
+];
+
+const DIVS = ['All','AL East','AL Central','AL West','NL East','NL Central','NL West'];
+
+// image helpers
+const IMG = {
+  jersey: (n)=>`https://loremflickr.com/300/360/baseball,jersey,uniform?lock=${n}`,
+  cap:    (n)=>`https://loremflickr.com/300/300/baseball,cap,hat?lock=${n}`,
+  bat:    (n)=>`https://loremflickr.com/300/300/baseball,bat,wood?lock=${n}`,
+  glove:  (n)=>`https://loremflickr.com/300/300/baseball,glove,leather?lock=${n}`,
+  ball:   (n)=>`https://loremflickr.com/300/300/baseball,ball,sport?lock=${n}`,
+  kit:    (n)=>`https://loremflickr.com/300/360/baseball,uniform,kit?lock=${n}`,
+  gear:   (n)=>`https://loremflickr.com/300/300/sports,bag,backpack?lock=${n}`,
+  collect:(n)=>`https://loremflickr.com/300/300/baseball,trophy,sport?lock=${n}`,
+};
+const EMJ = {jersey:'⚾',cap:'🧢',bat:'🪵',glove:'🤿',ball:'⚾',kit:'🏆',gear:'🎒',collect:'🏆'};
+
+const PRODUCTS = [
+  // JERSEYS (12)
+  {id:1,cat:'jersey',team:'NYY',name:'Yankees Pinstripe Authentic Jersey',jp:'ヤンキース ピンストライプ ジャージ',kr:'양키스 핀스트라이프 정품 저지',price:149.99,badge:'new',desc:'Official authentic pinstripe home jersey. Cool-Base moisture-wicking fabric. MLB authenticated.'},
+  {id:2,cat:'jersey',team:'LAD',name:'Dodgers Ohtani #17 Jersey',jp:'ドジャース 大谷翔平 #17 ジャージ',kr:'다저스 오타니 쇼헤이 #17 저지',price:179.99,old:199.99,badge:'sale',desc:'Shohei Ohtani official road jersey. A must-have for Japanese MLB fans worldwide. Cool-Base technology.'},
+  {id:3,cat:'jersey',team:'BOS',name:'Red Sox Home White Jersey',jp:'レッドソックス ホームジャージ',kr:'레드삭스 홈 화이트 저지',price:139.99,badge:null,desc:'Classic Boston Red Sox home jersey. Authentic Majestic stitching, breathable fabric.'},
+  {id:4,cat:'jersey',team:'CHC',name:'Cubs Pinstripe Home Jersey',jp:'カブス ピンストライプ ジャージ',kr:'컵스 핀스트라이프 홈 저지',price:134.99,badge:null,desc:'Chicago Cubs authentic home pinstripe jersey. Royal blue with red numbering.'},
+  {id:5,cat:'jersey',team:'HOU',name:'Astros Space City Jersey',jp:'アストロズ スペースシティジャージ',kr:'애스트로스 스페이스 시티 저지',price:159.99,badge:'hot',desc:'Limited edition Space City Connect jersey. Unique design celebrating Houston.'},
+  {id:6,cat:'jersey',team:'SEA',name:'Mariners Ichiro Tribute #51',jp:'マリナーズ イチロー トリビュート #51',kr:'마리너스 이치로 트리뷰트 #51',price:169.99,badge:'jp',desc:'Commemorative Ichiro Suzuki #51 tribute jersey. Limited run — beloved by Japanese fans.'},
+  {id:7,cat:'jersey',team:'SD',name:'Padres City Connect Jersey',jp:'パドレス シティコネクトジャージ',kr:'파드레스 시티 커넥트 저지',price:154.99,badge:'new',desc:'Padres City Connect series. Unique brown and gold desert-inspired design.'},
+  {id:8,cat:'jersey',team:'ATL',name:'Braves Home Tomahawk Jersey',jp:'ブレーブス ホームジャージ',kr:'브레이브스 홈 저지',price:144.99,badge:null,desc:'Atlanta Braves authentic home jersey. Navy and red, official Majestic.'},
+  {id:9,cat:'jersey',team:'NYM',name:'Mets Pinstripe Away Jersey',jp:'メッツ アウェイジャージ',kr:'메츠 어웨이 저지',price:139.99,badge:null,desc:'New York Mets official road jersey. Royal blue with orange detail.'},
+  {id:10,cat:'jersey',team:'PHI',name:'Phillies World Series Jersey',jp:'フィリーズ ワールドシリーズジャージ',kr:'필리스 월드시리즈 저지',price:164.99,badge:'hot',desc:'Philadelphia Phillies 2022 World Series commemorative jersey.'},
+  {id:11,cat:'jersey',team:'STL',name:'Cardinals White Home Jersey',jp:'カージナルス ホームジャージ',kr:'카디널스 홈 저지',price:144.99,badge:null,desc:'St. Louis Cardinals classic white home jersey. Authentic cool-base fabric.'},
+  {id:12,cat:'jersey',team:'LAA',name:'Angels Ohtani Era Jersey',jp:'エンゼルス 大谷時代ジャージ',kr:'엔젤스 오타니 시대 저지',price:155.99,old:175.99,badge:'sale',desc:'Commemorate Ohtanis Angels years with this authentic throwback jersey.'},
+
+  // CAPS (10)
+  {id:13,cat:'cap',team:'NYY',name:'Yankees 59FIFTY Fitted Cap',jp:'ヤンキース 59FIFTYキャップ',kr:'양키스 59FIFTY 피티드 캡',price:44.99,badge:'new',desc:'Classic New Era 59FIFTY fitted cap. Iconic NY logo, wool blend.'},
+  {id:14,cat:'cap',team:'LAD',name:'Dodgers Snapback Cap',jp:'ドジャース スナップバックキャップ',kr:'다저스 스냅백 캡',price:38.99,badge:null,desc:'Adjustable Dodger blue snapback. One size fits all. Embroidered logo.'},
+  {id:15,cat:'cap',team:'BOS',name:'Red Sox Classic 9FORTY',jp:'レッドソックス 9FORTYキャップ',kr:'레드삭스 클래식 9FORTY',price:35.99,badge:null,desc:'Boston Red Sox adjustable 9FORTY dad hat. Curved brim, casual style.'},
+  {id:16,cat:'cap',team:'CHC',name:'Cubs Adjustable Trucker',jp:'カブス トラッカーキャップ',kr:'컵스 어저스터블 트러커',price:32.99,badge:null,desc:'Chicago Cubs trucker hat. Mesh back, embroidered bear logo.'},
+  {id:17,cat:'cap',team:'SEA',name:'Mariners New Era Low Profile',jp:'マリナーズ ローブリムキャップ',kr:'마리너스 뉴에라 로우 프로파일',price:41.99,badge:'jp',desc:'Seattle Mariners navy low-profile cap. Popular with Japanese fans.'},
+  {id:18,cat:'cap',team:'HOU',name:'Astros Space City Cap',jp:'アストロズ スペースシティキャップ',kr:'애스트로스 스페이스 시티 캡',price:43.99,badge:'hot',desc:'Matching Space City cap to coordinate with the jersey. Navy/orange.'},
+  {id:19,cat:'cap',team:'PIT',name:'Pirates Retro Bucket Hat',jp:'パイレーツ バケットハット',kr:'파이럿츠 레트로 버킷햇',price:29.99,badge:null,desc:'Pittsburgh Pirates summer bucket hat. Sun protection, adjustable.'},
+  {id:20,cat:'cap',team:'OAK',name:'Athletics Green 59FIFTY',jp:'アスレチックス グリーンキャップ',kr:'어슬레틱스 그린 59FIFTY',price:44.99,badge:null,desc:'Oakland A\'s iconic kelly green fitted cap. Classic elephant logo.'},
+  {id:21,cat:'cap',team:'COL',name:'Rockies Purple Fitted',jp:'ロッキーズ パープルキャップ',kr:'로키스 퍼플 피티드',price:42.99,badge:null,desc:'Colorado Rockies purple 59FIFTY. Mountain logo, moisture-wicking sweatband.'},
+  {id:22,cat:'cap',team:'LAA',name:'Angels Red Rally Cap',jp:'エンゼルス ラリーキャップ',kr:'엔젤스 레드 랠리 캡',price:37.99,badge:null,desc:'LA Angels rally cap in classic red. Adjustable with embroidered halo logo.'},
+
+  // BATS (6)
+  {id:23,cat:'bat',team:'NYY',name:'Pro Maple Bat — Yankees Ed.',jp:'プロメイプルバット ヤンキース版',kr:'프로 메이플 배트 — 양키스 에디션',price:89.99,badge:'new',desc:'Full-size 34" maple wood bat. Yankees branded. Cupped end, pro taper.'},
+  {id:24,cat:'bat',team:'LAD',name:'Louisville Slugger Replica — Dodgers',jp:'ルイビルスラッガー ドジャース',kr:'루이빌 슬러거 레플리카 — 다저스',price:74.99,badge:null,desc:'Official Louisville Slugger MLB replica bat. Dodger blue handle wrap.'},
+  {id:25,cat:'bat',team:'BOS',name:'Rawlings Big Stick Pro Bat',jp:'ローリングス ビッグスティック バット',kr:'롤링스 빅스틱 프로 배트',price:79.99,badge:null,desc:'Rawlings Big Stick ash wood bat. 33.5" professional grade.'},
+  {id:26,cat:'bat',team:'STL',name:'Marucci Pro Model — Cardinals',jp:'マルッチ プロモデル カージナルス',kr:'마루치 프로 모델 — 카디널스',price:84.99,badge:'hot',desc:'Marucci maple pro model bat. Cardinals red signature handle.'},
+  {id:27,cat:'bat',team:'CHC',name:'Youth Training Bat Set',jp:'少年用トレーニングバットセット',kr:'유스 트레이닝 배트 세트',price:54.99,old:69.99,badge:'sale',desc:'Set of 3 training bats for youth players aged 7-14. Light aluminum.'},
+  {id:28,cat:'bat',team:'BOS',name:'Mini Collectible Bat — Red Sox',jp:'ミニコレクタブルバット レッドソックス',kr:'미니 컬렉터블 배트 — 레드삭스',price:24.99,badge:null,desc:'18" mini souvenir bat. Red Sox logo, lacquered finish, display-ready.'},
+
+  // GLOVES (6)
+  {id:29,cat:'glove',team:'NYY',name:'Rawlings Pro Outfield Glove',jp:'ローリングス プロ外野手グローブ',kr:'롤링스 프로 외야수 글러브',price:119.99,badge:'new',desc:'12.75" Rawlings Pro Preferred outfield glove. Premium kip leather. Yankees branded.'},
+  {id:30,cat:'glove',team:'LAD',name:'Wilson A2000 Infield Glove',jp:'ウィルソン A2000 内野手グローブ',kr:'윌슨 A2000 내야수 글러브',price:134.99,badge:null,desc:'11.5" Wilson A2000 infield glove. Double palm construction, Dodgers edition.'},
+  {id:31,cat:'glove',team:'HOU',name:'Easton Catchers Mitt',jp:'イーストン キャッチャーミット',kr:'이스턴 캐처스 미트',price:89.99,badge:null,desc:'32.5" Easton Pro Collection catcher\'s mitt. Break-in factory treated.'},
+  {id:32,cat:'glove',team:'SEA',name:'Youth Starter Glove Set',jp:'少年用スターターグローブセット',kr:'유스 스타터 글러브 세트',price:49.99,old:64.99,badge:'sale',desc:'Starter set for young players 8-12. Soft synthetic leather. Mariners themed.'},
+  {id:33,cat:'glove',team:'NYY',name:'Batting Gloves Pro — Yankees',jp:'バッティンググローブ ヤンキース',kr:'배팅 글러브 프로 — 양키스',price:34.99,badge:null,desc:'Franklin Pro Classic batting gloves. Yankees navy/white. Velcro strap.'},
+  {id:34,cat:'glove',team:'ATL',name:'Franklin Fielding Glove 12"',jp:'フランクリン フィールディンググローブ',kr:'프랭클린 필딩 글러브 12인치',price:55.99,badge:null,desc:'12" Franklin fielding glove. Great all-position glove. Braves colors.'},
+
+  // BALLS (4)
+  {id:35,cat:'ball',team:'NYY',name:'Official MLB Game Ball',jp:'MLB公式試合球',kr:'MLB 공식 게임 볼',price:19.99,badge:'new',desc:'Official Rawlings MLB game ball. Genuine leather, cork & rubber core.'},
+  {id:36,cat:'ball',team:'LAD',name:'Autograph Blank Baseball Set (3pk)',jp:'オートグラフ用ブランクボール 3個セット',kr:'오토그래프 블랭크 볼 세트 (3개입)',price:34.99,badge:null,desc:'Pack of 3 blank signature baseballs. Premium Rawlings leather. Display stands included.'},
+  {id:37,cat:'ball',team:'NYY',name:'Yankees Logo Ball Set (6pk)',jp:'ヤンキース ロゴボール 6個セット',kr:'양키스 로고 볼 세트 (6개입)',price:44.99,badge:null,desc:'Set of 6 Yankees branded baseballs. Gift box included. Perfect souvenir.'},
+  {id:38,cat:'ball',team:'LAD',name:'Rawlings Leather Training Ball',jp:'ローリングス レザートレーニングボール',kr:'롤링스 레더 트레이닝 볼',price:14.99,badge:null,desc:'Premium leather training baseball. Full-grain leather cover, pro-stitch seams.'},
+
+  // FULL KITS (5)
+  {id:39,cat:'kit',team:'NYY',name:'Yankees Complete Starter Kit',jp:'ヤンキース コンプリートスターターキット',kr:'양키스 컴플리트 스타터 킷',price:229.99,old:279.99,badge:'sale',desc:'Everything in one box: Jersey + Cap + Baseball + Batting gloves. Perfect gift.'},
+  {id:40,cat:'kit',team:'LAD',name:'Dodgers Ohtani Fan Pack',jp:'ドジャース 大谷ファンパック',kr:'다저스 오타니 팬 팩',price:189.99,badge:'hot',desc:'Ohtani #17 jersey + Dodgers cap + signed photo print. Ships worldwide.'},
+  {id:41,cat:'kit',team:'SEA',name:'Japan Edition MLB Kit',jp:'日本版MLBキット',kr:'일본 에디션 MLB 킷',price:199.99,badge:'jp',desc:'Special Japan market kit: Mariners jersey + cap + Japanese packaging + bilingual sticker set.'},
+  {id:42,cat:'kit',team:'SD',name:'Korea Star Pack — Ha-seong Kim',jp:'韓国スターパック キム・ハソン',kr:'코리아 스타팩 — 김하성',price:184.99,badge:'kr',desc:'Ha-seong Kim Padres kit: jersey + cap + Korean branded box. Ships to Korea with tracking.'},
+  {id:43,cat:'kit',team:'NYY',name:'Youth MLB Starter Set',jp:'少年用 MLB スターターセット',kr:'유스 MLB 스타터 세트',price:129.99,old:159.99,badge:'sale',desc:'Kids kit: youth jersey + cap + glove + ball. Perfect for young fans aged 6-12.'},
+
+  // GEAR/ACCESSORIES (7)
+  {id:44,cat:'gear',team:'NYY',name:'MLB Dugout Backpack — Navy',jp:'MLB ダグアウトバックパック ネイビー',kr:'MLB 더그아웃 백팩 — 네이비',price:64.99,badge:'new',desc:'Team-branded backpack. 30L capacity, laptop compartment, ball pocket. Water-resistant.'},
+  {id:45,cat:'gear',team:'LAD',name:'Dodgers Stadium Tote Bag',jp:'ドジャース スタジアムトートバッグ',kr:'다저스 스타디움 토트백',price:28.99,badge:null,desc:'Canvas tote with embroidered Dodger logo. Stadium-approved size.'},
+  {id:46,cat:'gear',team:'NYM',name:'MLB Team Water Bottle — 32oz',jp:'MLB チームウォーターボトル 32oz',kr:'MLB 팀 물병 32oz',price:22.99,badge:null,desc:'Insulated stainless steel water bottle. Team logo. Keeps cold 24h.'},
+  {id:47,cat:'gear',team:'HOU',name:'Batting Helmet Replica',jp:'バッティングヘルメット レプリカ',kr:'배팅 헬멧 레플리카',price:54.99,badge:null,desc:'Full-size batting helmet replica. Display-ready, hard ABS shell. Astros themed.'},
+  {id:48,cat:'gear',team:'CHC',name:'Baseball Card Sleeve Pack 200ct',jp:'ベースボールカードスリーブ 200枚',kr:'베이스볼 카드 슬리브 200장',price:12.99,badge:null,desc:'200 count premium card sleeves. Standard size, acid-free, UV protection.'},
+  {id:49,cat:'gear',team:'NYY',name:'MLB Knit Team Scarf',jp:'MLB チームニットスカーフ',kr:'MLB 팀 니트 스카프',price:24.99,badge:null,desc:'Soft acrylic knit scarf with team stripes and logo. Winter stadium essential.'},
+  {id:50,cat:'gear',team:'LAD',name:'MLB Pro Series Sunglasses',jp:'MLB プロシリーズ サングラス',kr:'MLB 프로 시리즈 선글라스',price:39.99,old:54.99,badge:'sale',desc:'UV400 polarized sunglasses. Dodger blue with mirrored lenses. Soft case included.'},
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let state = {
+  lang:'en',currency:'USD',
+  catFilter:'all',teamFilter:'all',divFilter:'All',
+  sortBy:'default',searchQ:'',
+  cart:[],
+  wishlist:new Set(),
+  page:1,perPage:12,
+  modalQty:1,modalSize:'M',modalProduct:null,
+};
+
+const FX = {USD:1,JPY:148,KRW:1320};
+const CUR_SYM = {USD:'$',JPY:'¥',KRW:'₩'};
+function fmt(usd){
+  const v = usd * FX[state.currency];
+  if(state.currency==='USD') return `$${v.toFixed(2)}`;
+  if(state.currency==='JPY') return `¥${Math.round(v).toLocaleString()}`;
+  return `₩${Math.round(v).toLocaleString()}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TICKER
+// ═══════════════════════════════════════════════════════════
+(function buildTicker(){
+  const msgs = [
+    '⚾ FREE SHIPPING OVER $75','★ MLB 2025 SEASON GEAR','★ SHIPS TO USA · JAPAN · KOREA',
+    '★ AUTHENTIC LICENSED PRODUCTS','★ 送料無料 $75以上','★ 한국 무료배송 $75+',
+    '★ WORLD SERIES COLLECTION','★ 30 MLB TEAMS IN STOCK','★ CRYPTO ACCEPTED ₿',
+    '★ ALL 50 PRODUCTS IN STOCK','★ NEW ARRIVALS WEEKLY'
+  ];
+  const t = document.getElementById('tickerInner');
+  const txt = msgs.map(m=>`<span>${m}</span>`).join('');
+  t.innerHTML = txt+txt;
+})();
+
+// ═══════════════════════════════════════════════════════════
+// TEAMS + DIVISIONS
+// ═══════════════════════════════════════════════════════════
+function buildTeams(){
+  // division filter buttons
+  const df = document.getElementById('divFilters');
+  df.innerHTML = DIVS.map(d=>`<button class="div-btn${d==='All'?' active':''}" onclick="filterDiv('${d}',this)">${d}</button>`).join('');
+  renderTeamChips();
+}
+
+function renderTeamChips(){
+  const scroll = document.getElementById('teamsScroll');
+  const filtered = state.divFilter==='All'?TEAMS:TEAMS.filter(t=>t.div===state.divFilter);
+  scroll.innerHTML = `
+    <div class="team-chip${state.teamFilter==='all'?' active':''}" onclick="filterTeam('all',this)">
+      <div class="team-dot" style="background:var(--gold)"></div>
+      <span class="t en">All Teams</span><span class="t jp">全チーム</span><span class="t kr">전체</span>
+    </div>
+    ${filtered.map(t=>`
+      <div class="team-chip${state.teamFilter===t.id?' active':''}" onclick="filterTeam('${t.id}',this)">
+        <div class="team-dot" style="background:${t.color}"></div>${t.name}
+      </div>
+    `).join('')}
+  `;
+}
+
+function filterDiv(div,btn){
+  state.divFilter=div;
+  document.querySelectorAll('.div-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTeamChips();
+}
+
+function filterTeam(team,el){
+  state.teamFilter=team;state.page=1;
+  document.querySelectorAll('.team-chip').forEach(c=>c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderProducts();
+}
+
+// ═══════════════════════════════════════════════════════════
+// FILTERS BAR
+// ═══════════════════════════════════════════════════════════
+function buildFilters(){
+  const bar = document.getElementById('filtersBar');
+  const cats = [
+    {id:'all',en:'All',jp:'すべて',kr:'전체'},
+    {id:'jersey',en:'Jerseys',jp:'ジャージ',kr:'저지'},
+    {id:'cap',en:'Caps',jp:'キャップ',kr:'모자'},
+    {id:'bat',en:'Bats',jp:'バット',kr:'배트'},
+    {id:'glove',en:'Gloves',jp:'グローブ',kr:'글러브'},
+    {id:'ball',en:'Balls',jp:'ボール',kr:'볼'},
+    {id:'kit',en:'Full Kits',jp:'フルキット',kr:'풀킷'},
+    {id:'gear',en:'Gear',jp:'ギア',kr:'장비'},
+  ];
+  bar.innerHTML = cats.map(c=>`
+    <button class="flt${state.catFilter===c.id?' active':''}" onclick="filterCat('${c.id}',this)">
+      <span class="t en">${c.en}</span><span class="t jp">${c.jp}</span><span class="t kr">${c.kr}</span>
+    </button>
+  `).join('') + `<select class="sort-sel" onchange="setSort(this.value)">
+    <option value="default">Sort: Default</option>
+    <option value="price_asc">Price: Low→High</option>
+    <option value="price_desc">Price: High→Low</option>
+    <option value="new">Newest First</option>
+    <option value="sale">Sale Items</option>
+  </select>`;
+}
+
+function filterCat(cat,btn){
+  state.catFilter=cat;state.page=1;
+  document.querySelectorAll('.flt').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderProducts();
+}
+
+function setSort(v){state.sortBy=v;state.page=1;renderProducts();}
+
+function doSearch(){
+  state.searchQ=document.getElementById('searchInput').value.toLowerCase();
+  state.page=1;
+  renderProducts();
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER PRODUCTS
+// ═══════════════════════════════════════════════════════════
+function getFiltered(){
+  let list = PRODUCTS.filter(p=>{
+    if(state.catFilter!=='all'&&p.cat!==state.catFilter) return false;
+    if(state.teamFilter!=='all'&&p.team!==state.teamFilter) return false;
+    if(state.searchQ){
+      const q=state.searchQ;
+      if(!p.name.toLowerCase().includes(q)&&!p.jp.toLowerCase().includes(q)&&
+         !p.kr.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q)&&
+         !p.cat.includes(q)) return false;
+    }
+    return true;
+  });
+  if(state.sortBy==='price_asc') list.sort((a,b)=>a.price-b.price);
+  else if(state.sortBy==='price_desc') list.sort((a,b)=>b.price-a.price);
+  else if(state.sortBy==='new') list.sort((a,b)=>(b.badge==='new'?1:0)-(a.badge==='new'?1:0));
+  else if(state.sortBy==='sale') list.sort((a,b)=>(b.badge==='sale'?1:0)-(a.badge==='sale'?1:0));
+  return list;
+}
+
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  const btn = document.getElementById('loadMoreBtn');
+  const all = getFiltered();
+  const show = all.slice(0, state.page * state.perPage);
+
+  const rc = document.getElementById('resultsRow');
+  const totalLabel = {en:`${all.length} products`,jp:`${all.length}点の商品`,kr:`${all.length}개 상품`};
+  rc.innerHTML = `<span style="font-size:.8rem;color:var(--steel)">${totalLabel[state.lang]}</span>`;
+
+  if(all.length===0){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--steel)"><div style="font-size:3rem;margin-bottom:.5rem">⚾</div><div>No products found.</div></div>`;
+    btn.classList.add('hidden');return;
+  }
+
+  grid.innerHTML = show.map(p=>{
+    const imgUrl = IMG[p.cat](p.id);
+    const local = state.lang==='jp'?p.jp:state.lang==='kr'?p.kr:p.cat.charAt(0).toUpperCase()+p.cat.slice(1);
+    const badgeHtml = p.badge?`<div class="pc-badge ${p.badge}">${p.badge==='new'?'NEW':p.badge==='sale'?'SALE':p.badge==='hot'?'🔥 HOT':p.badge.toUpperCase()}</div>`:'';
+    const priceHtml = `<div class="pc-price">${p.old?`<span class="old">${fmt(p.old)}</span>`:''} ${fmt(p.price)}</div>`;
+    const teamObj = TEAMS.find(t=>t.id===p.team);
+    return `<div class="product-card" onclick="openModal(${p.id})">
+      <div class="pc-img">
+        <img src="${imgUrl}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="pc-fallback" style="display:none;background:linear-gradient(135deg,${teamObj?.color||'#0a1a30'}22,${teamObj?.color||'#0a1a30'}08)">${EMJ[p.cat]||'⚾'}</div>
+        ${badgeHtml}
+        <div class="pc-overlay"><div class="pc-overlay-btn">QUICK VIEW</div></div>
+        <span class="pc-wish${state.wishlist.has(p.id)?' liked':''}" onclick="toggleWish(event,${p.id})">❤️</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-team">${p.team} · ${p.cat.toUpperCase()}</div>
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-local">${local}</div>
+        <div class="pc-foot">
+          ${priceHtml}
+          <button class="pc-cart" onclick="quickAdd(event,${p.id})">+</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  btn.style.display = show.length < all.length ? 'inline-block' : 'none';
+  observeFI();
+}
+
+function loadMore(){
+  state.page++;
+  renderProducts();
+  document.getElementById('loadMoreBtn').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ═══════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════
+function openModal(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  state.modalProduct=p; state.modalQty=1; state.modalSize='M';
+  const teamObj=TEAMS.find(t=>t.id===p.team);
+  const local = state.lang==='jp'?p.jp:state.lang==='kr'?p.kr:'';
+  const badgeColors = {new:'background:var(--gold);color:var(--navy)',sale:'background:var(--red);color:#fff',
+    hot:'background:#ff6b00;color:#fff',jp:'background:#bc002d;color:#fff',kr:'background:#003478;color:#fff'};
+  const badgeStyle = p.badge?(badgeColors[p.badge]||'background:var(--steel);color:#fff'):'';
+  const imgUrl = IMG[p.cat](p.id);
+
+  document.getElementById('modalImg').innerHTML=`
+    <img src="${imgUrl}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+    <div class="modal-img-fallback" style="display:none;background:linear-gradient(135deg,${teamObj?.color||'#0a1a30'}33,${teamObj?.color||'#0a1a30'}11)">${EMJ[p.cat]||'⚾'}</div>
+  `;
+
+  const hasSizes = ['jersey','cap','glove','kit'].includes(p.cat);
+  const sizes = p.cat==='cap'?['S/M','L/XL','One Size']:
+                p.cat==='bat'?['30"','32"','33"','34"']:
+                p.cat==='glove'?['10"','11"','11.5"','12"','12.75"']:
+                ['XS','S','M','L','XL','XXL'];
+
+  document.getElementById('modalInfo').innerHTML=`
+    <div>
+      ${p.badge?`<div class="modal-badge" style="${badgeStyle}">${p.badge.toUpperCase()}</div>`:''}
+      <div class="modal-team">${p.team} · ${p.cat.toUpperCase()}</div>
+      <div class="modal-name">${p.name}</div>
+      ${local?`<div class="modal-name-local">${local}</div>`:''}
+      <div class="modal-price">${p.old?`<span class="old">${fmt(p.old)}</span>`:''} ${fmt(p.price)}</div>
+      <div class="modal-desc">${p.desc||''}</div>
+    </div>
+    ${hasSizes?`<div>
+      <div class="size-label">Size</div>
+      <div class="sizes">${sizes.map(s=>`<button class="size-btn${s===state.modalSize?' active':''}" onclick="setSize('${s}',this)">${s}</button>`).join('')}</div>
+    </div>`:''}
+    <div class="qty-row">
+      <div class="qty-ctrl">
+        <button onclick="adjQty(-1)">−</button>
+        <span id="mqty">1</span>
+        <button onclick="adjQty(1)">+</button>
+      </div>
+      <button class="modal-add" onclick="modalAddCart()">
+        <span class="t en">ADD TO CART</span><span class="t jp">カートに追加</span><span class="t kr">장바구니 추가</span>
+      </button>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function setSize(s,btn){
+  state.modalSize=s;
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function adjQty(d){
+  state.modalQty=Math.max(1,state.modalQty+d);
+  const el=document.getElementById('mqty');
+  if(el) el.textContent=state.modalQty;
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function modalAddCart(){
+  if(!state.modalProduct) return;
+  addToCart(state.modalProduct,state.modalQty,state.modalSize);
+  closeModalDirect();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CART
+// ═══════════════════════════════════════════════════════════
+function toggleCart(){
+  const s=document.getElementById('cartSidebar');
+  const o=document.getElementById('cartOverlay');
+  const isOpen=s.classList.toggle('open');
+  o.classList.toggle('open',isOpen);
+  document.body.classList.toggle('cart-open',isOpen);
+}
+
+function addToCart(p,qty=1,size='M'){
+  const key=`${p.id}-${size}`;
+  const ex=state.cart.find(i=>i.key===key);
+  if(ex) ex.qty+=qty;
+  else state.cart.push({key,id:p.id,name:p.name,jp:p.jp,kr:p.kr,price:p.price,emoji:EMJ[p.cat]||'⚾',size,qty,cat:p.cat,team:p.team});
+  renderCart();
+  const nm = state.lang==='jp'?p.jp:state.lang==='kr'?p.kr:p.name;
+  toast(`<b>${nm}</b> — added to cart ⚾`);
+}
+
+function quickAdd(e,id){
+  e.stopPropagation();
+  const p=PRODUCTS.find(x=>x.id===id);
+  if(p) addToCart(p,1,'M');
+}
+
+function addFeatured(){
+  const p=PRODUCTS.find(x=>x.id===2);
+  if(p) addToCart(p,1,'L');
+}
+
+function removeFromCart(key){
+  state.cart=state.cart.filter(i=>i.key!==key);
+  renderCart();
+}
+
+function changeQty(key,d){
+  const item=state.cart.find(i=>i.key===key);
+  if(!item) return;
+  item.qty=Math.max(0,item.qty+d);
+  if(item.qty===0) state.cart=state.cart.filter(i=>i.key!==key);
+  renderCart();
+}
+
+function renderCart(){
+  const body=document.getElementById('cartItems');
+  const empty=document.getElementById('cartEmpty');
+  const cnt=document.getElementById('cartCnt');
+  const total=document.getElementById('cartTotal');
+  const totalQty=state.cart.reduce((s,i)=>s+i.qty,0);
+  const totalUSD=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+  cnt.textContent=totalQty;
+  total.textContent=fmt(totalUSD);
+  empty.style.display=state.cart.length?'none':'block';
+  body.innerHTML=state.cart.map(item=>{
+    const nm=state.lang==='jp'?item.jp:state.lang==='kr'?item.kr:item.name;
+    return `<div class="cart-item">
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${nm}</div>
+        <div class="cart-item-sub">${item.team} · ${item.size}</div>
+        <div class="cart-item-price">${fmt(item.price)}</div>
+        <div class="cart-qty">
+          <button onclick="changeQty('${item.key}',-1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty('${item.key}',1)">+</button>
+        </div>
+      </div>
+      <button class="cart-remove" onclick="removeFromCart('${item.key}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function setCurrency(cur,btn){
+  state.currency=cur;
+  document.querySelectorAll('.cur-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCart();
+  renderProducts();
+}
+
+function checkout(){
+  if(state.cart.length===0){
+    toast('Your cart is empty!'); return;
+  }
+  const msg={en:'Redirecting to checkout...',jp:'チェックアウトへ移動中...',kr:'결제 페이지로 이동 중...'};
+  toast(msg[state.lang]);
+  setTimeout(()=>toggleCart(),1500);
+}
+
+// ═══════════════════════════════════════════════════════════
+// WISHLIST
+// ═══════════════════════════════════════════════════════════
+function toggleWish(e,id){
+  e.stopPropagation();
+  if(state.wishlist.has(id)) state.wishlist.delete(id);
+  else state.wishlist.add(id);
+  const el=e.currentTarget;
+  el.classList.toggle('liked',state.wishlist.has(id));
+  toast(state.wishlist.has(id)?'Added to wishlist ❤️':'Removed from wishlist');
+}
+
+// ═══════════════════════════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════════════════════════
+function setLang(lang,btn){
+  state.lang=lang;
+  document.body.className=`lang-${lang}`;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const ph={en:'Search jerseys, caps, bats…',jp:'ジャージ、キャップ、バットを検索…',kr:'저지, 모자, 배트 검색…'};
+  const si=document.getElementById('searchInput');
+  if(si) si.placeholder=ph[lang];
+  renderProducts();
+  renderCart();
+}
+
+// ═══════════════════════════════════════════════════════════
+// NEWSLETTER
+// ═══════════════════════════════════════════════════════════
+function subscribe(e){
+  e.preventDefault();
+  const msg={en:'You\'re in! 10% off coupon sent ⚾',jp:'ご登録完了！10%OFFクーポンを送りました',kr:'구독 완료! 10% 할인 쿠폰을 보내드렸습니다 ⚾'};
+  toast(`<b>${msg[state.lang]}</b>`);
+  document.getElementById('nlEmail').value='';
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').innerHTML=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ═══════════════════════════════════════════════════════════
+// FADE IN OBSERVER
+// ═══════════════════════════════════════════════════════════
+function observeFI(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');});
+  },{threshold:.08});
+  document.querySelectorAll('.fi:not(.v)').forEach(el=>io.observe(el));
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+buildTeams();
+buildFilters();
+renderProducts();
+renderCart();
+setTimeout(observeFI,100);
+
+// Hero entrance
+document.querySelector('.hero-l').classList.add('v');
+</script>
+</body>
+</html>
