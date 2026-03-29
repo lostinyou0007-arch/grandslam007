@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GrandSlam Shop | MLB Official Merchandise – USA · Japan · Korea</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#05101f;--navy2:#0a1a30;--card:#0d1e35;--red:#d81c2a;--red2:#ff2233;
+  --gold:#f0b429;--cream:#f0ece2;--steel:#6b7e96;--white:#fff;--border:rgba(255,255,255,0.07);
+  --font-h:'Bebas Neue',sans-serif;--font-b:'Barlow Condensed',sans-serif;
+  --font-jp:'Noto Sans JP',sans-serif;--font-kr:'Noto Sans KR',sans-serif;
+  --r:4px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--navy);color:var(--cream);font-family:var(--font-b);overflow-x:hidden;cursor:default;}
+body.cart-open{overflow:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;background:none;font-family:var(--font-b);}
+img{display:block;width:100%;height:100%;object-fit:cover;}
+.hidden{display:none!important;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px;}
+
+/* ── NOISE LAYER ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  opacity:.35;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");}
+
+/* ── CART OVERLAY ── */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  z-index:500;opacity:0;pointer-events:none;transition:opacity .3s;}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+
+/* ── CART SIDEBAR ── */
+.cart-sidebar{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;
+  background:#0e1f38;border-left:1px solid var(--border);z-index:600;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.cart-sidebar.open{transform:translateX(0);}
+.cart-head{padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;}
+.cart-head h2{font-family:var(--font-h);font-size:1.8rem;letter-spacing:1px;color:var(--white);}
+.cart-close{font-size:1.6rem;color:var(--steel);transition:color .2s;}
+.cart-close:hover{color:var(--red);}
+.cart-body{flex:1;overflow-y:auto;padding:1rem 1.6rem;}
+.cart-empty{text-align:center;padding:4rem 0;color:var(--steel);}
+.cart-empty .icon{font-size:3.5rem;margin-bottom:.8rem;}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);}
+.cart-item-img{width:70px;height:70px;background:var(--card);flex-shrink:0;
+  border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:.95rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:.3rem;}
+.cart-item-sub{font-size:.75rem;color:var(--steel);margin-bottom:.5rem;}
+.cart-item-price{font-family:var(--font-h);font-size:1.2rem;color:var(--gold);}
+.cart-qty{display:flex;align-items:center;gap:.5rem;margin-top:.4rem;}
+.cart-qty button{width:24px;height:24px;background:var(--border);color:var(--cream);
+  border-radius:2px;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.cart-qty button:hover{background:var(--red);}
+.cart-qty span{font-size:.9rem;min-width:20px;text-align:center;}
+.cart-remove{color:var(--steel);font-size:1.1rem;align-self:flex-start;transition:color .2s;}
+.cart-remove:hover{color:var(--red);}
+.cart-foot{padding:1.4rem 1.6rem;border-top:1px solid var(--border);}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.cart-total span{font-family:var(--font-h);font-size:1rem;letter-spacing:1px;color:var(--steel);}
+.cart-total strong{font-family:var(--font-h);font-size:1.8rem;color:var(--gold);}
+.cart-checkout{width:100%;background:var(--red);color:var(--white);padding:14px;
+  font-family:var(--font-h);font-size:1.3rem;letter-spacing:2px;transition:background .2s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);}
+.cart-checkout:hover{background:var(--red2);}
+.pay-methods{display:flex;flex-wrap:wrap;gap:6px;margin-top:.8rem;}
+.pay-chip{background:rgba(255,255,255,.06);border:1px solid var(--border);
+  padding:3px 10px;border-radius:2px;font-size:.7rem;color:var(--steel);font-weight:700;letter-spacing:1px;}
+.currency-row{display:flex;gap:6px;margin-bottom:1rem;}
+.cur-btn{flex:1;padding:6px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--steel);font-size:.8rem;font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.cur-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* ── PRODUCT MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);
+  z-index:700;display:flex;align-items:center;justify-content:center;padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#0e1f38;border:1px solid var(--border);width:100%;max-width:700px;
+  max-height:90vh;overflow-y:auto;position:relative;border-radius:var(--r);}
+.modal-close{position:absolute;top:1rem;right:1rem;font-size:1.5rem;color:var(--steel);
+  z-index:1;transition:color .2s;}
+.modal-close:hover{color:var(--red);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;}
+.modal-img{height:320px;overflow:hidden;position:relative;background:var(--card);}
+.modal-img img{width:100%;height:100%;object-fit:cover;}
+.modal-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.modal-info{padding:2rem 1.8rem;display:flex;flex-direction:column;gap:1rem;}
+.modal-badge{display:inline-block;font-size:.65rem;letter-spacing:2px;
+  padding:3px 10px;font-weight:800;text-transform:uppercase;margin-bottom:.3rem;}
+.modal-team{font-size:.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.modal-name{font-family:var(--font-h);font-size:1.8rem;color:var(--white);line-height:1.1;}
+.modal-name-local{font-size:.9rem;color:var(--steel);margin-top:.2rem;}
+.modal-price{font-family:var(--font-h);font-size:2rem;color:var(--gold);}
+.modal-price .old{font-size:1.1rem;color:var(--steel);text-decoration:line-through;margin-right:.5rem;}
+.modal-desc{font-size:.9rem;color:var(--steel);line-height:1.7;}
+.size-label{font-size:.7rem;letter-spacing:2px;color:var(--steel);text-transform:uppercase;margin-bottom:.5rem;}
+.sizes{display:flex;gap:.5rem;flex-wrap:wrap;}
+.size-btn{width:42px;height:42px;border:1px solid var(--border);color:var(--cream);
+  font-size:.85rem;font-weight:700;transition:all .2s;border-radius:2px;}
+.size-btn:hover,.size-btn.active{background:var(--red);border-color:var(--red);color:var(--white);}
+.qty-row{display:flex;align-items:center;gap:1rem;}
+.qty-ctrl{display:flex;align-items:center;gap:.6rem;}
+.qty-ctrl button{width:36px;height:36px;background:rgba(255,255,255,.06);color:var(--cream);
+  font-size:1.2rem;border-radius:2px;transition:background .2s;}
+.qty-ctrl button:hover{background:var(--red);}
+.qty-ctrl span{font-family:var(--font-h);font-size:1.4rem;min-width:28px;text-align:center;}
+.modal-add{flex:1;background:var(--red);color:var(--white);padding:12px;
+  font-family:var(--font-h);font-size:1.2rem;letter-spacing:2px;transition:background .2s;
+  border-radius:2px;}
+.modal-add:hover{background:var(--red2);}
+@media(max-width:600px){.modal-grid{grid-template-columns:1fr;}.modal-img{height:220px;}}
+
+/* ── NOTIFICATION TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#0e1f38;border:1px solid var(--red);border-left:4px solid var(--red);
+  padding:12px 22px;color:var(--white);font-size:.9rem;z-index:800;
+  transition:transform .3s ease;white-space:nowrap;border-radius:var(--r);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast b{color:var(--gold);}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;height:62px;
+  background:rgba(5,16,31,.97);backdrop-filter:blur(14px);
+  border-bottom:2px solid var(--red);
+  display:flex;align-items:center;gap:1.5rem;padding:0 2rem;}
+.nav-logo{font-family:var(--font-h);font-size:1.9rem;letter-spacing:2px;color:var(--white);
+  display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0;}
+.nav-logo span{color:var(--red);}
+.ball-icon{width:28px;height:28px;background:var(--white);border-radius:50%;position:relative;flex-shrink:0;}
+.ball-icon::before,.ball-icon::after{content:'';position:absolute;border:2px solid var(--red);
+  top:50%;transform:translateY(-50%);height:70%;width:40%;}
+.ball-icon::before{left:0;border-left:none;border-radius:0 50% 50% 0;}
+.ball-icon::after{right:0;border-right:none;border-radius:50% 0 0 50%;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;flex:1;}
+.nav-links a{font-size:.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--steel);transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-search{flex:1;max-width:260px;position:relative;}
+.nav-search input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--white);padding:7px 14px 7px 34px;font-family:var(--font-b);font-size:.85rem;
+  border-radius:var(--r);outline:none;transition:border-color .2s;}
+.nav-search input:focus{border-color:var(--red);}
+.nav-search input::placeholder{color:var(--steel);}
+.nav-search::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.75rem;}
+.lang-sw{display:flex;gap:4px;flex-shrink:0;}
+.lang-btn{padding:4px 10px;border:1px solid var(--border);color:var(--cream);
+  font-size:.72rem;font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.lang-btn.active,.lang-btn:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.cart-btn{position:relative;font-size:1.4rem;color:var(--cream);transition:color .2s;flex-shrink:0;}
+.cart-btn:hover{color:var(--gold);}
+.cart-cnt{position:absolute;top:-8px;right:-8px;background:var(--red);color:var(--white);
+  width:18px;height:18px;border-radius:50%;font-size:.6rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-b);}
+
+/* ── HERO ── */
+.hero{min-height:88vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%, rgba(0,60,120,.25) 0%, transparent 70%),
+             radial-gradient(ellipse at 10% 90%, rgba(208,28,42,.12) 0%, transparent 60%);
+  pointer-events:none;}
+.hero-stripes{position:absolute;right:0;top:0;bottom:0;width:55%;
+  background:repeating-linear-gradient(-45deg,rgba(255,255,255,.012) 0,rgba(255,255,255,.012) 1px,transparent 1px,transparent 22px);
+  pointer-events:none;}
+.hero-l{padding:7rem 3.5rem 5rem;display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;}
+.hero-tag{font-size:.72rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;margin-bottom:1.6rem;}
+.hero-tag::before{content:'';width:36px;height:2px;background:var(--gold);display:block;}
+.hero-h1{font-family:var(--font-h);font-size:clamp(4.5rem,8vw,7.5rem);line-height:.9;
+  color:var(--white);margin-bottom:.8rem;}
+.hero-h1 .r{color:var(--red);}
+.hero-h1 .o{-webkit-text-stroke:2px var(--white);color:transparent;}
+.hero-sub{font-size:1.05rem;color:var(--steel);max-width:400px;line-height:1.7;font-weight:400;}
+.hero-ctas{margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-r{background:var(--red);color:var(--white);padding:14px 36px;font-family:var(--font-h);
+  font-size:1.2rem;letter-spacing:2px;transition:all .2s;display:inline-block;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);}
+.btn-r:hover{background:var(--red2);transform:translateY(-2px);}
+.btn-o{border:2px solid var(--cream);color:var(--cream);padding:12px 30px;font-family:var(--font-h);
+  font-size:1.2rem;letter-spacing:2px;transition:all .2s;display:inline-block;}
+.btn-o:hover{background:var(--cream);color:var(--navy);}
+.hero-stats{margin-top:3.5rem;display:flex;gap:3rem;}
+.stat-n{font-family:var(--font-h);font-size:2.6rem;color:var(--gold);display:block;}
+.stat-l{font-size:.7rem;letter-spacing:2px;color:var(--steel);text-transform:uppercase;}
+.hero-r{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+/* SVG baseball animation */
+.hero-ball-wrap{position:relative;animation:floatY 5s ease-in-out infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-18px) rotate(6deg);}}
+.hero-ball-svg{width:360px;height:360px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));}
+.badge-float{position:absolute;font-family:var(--font-h);font-size:.9rem;letter-spacing:1px;
+  padding:7px 16px;background:var(--red);color:var(--white);}
+.badge-float.t{top:60px;right:-10px;clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px);}
+.badge-float.b{bottom:70px;left:-10px;background:var(--gold);color:var(--navy);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);}
+
+/* ── TICKER ── */
+.ticker{background:var(--red);overflow:hidden;white-space:nowrap;padding:10px 0;
+  border-top:1px solid #ff3344;border-bottom:1px solid #9a0010;}
+.ticker-inner{display:inline-block;animation:tick 35s linear infinite;
+  font-family:var(--font-h);font-size:1rem;letter-spacing:3px;color:var(--white);}
+.ticker-inner span{margin-right:3rem;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── TEAMS STRIP ── */
+.teams-section{background:var(--card);border-bottom:1px solid var(--border);padding:2rem 2rem;}
+.teams-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+.teams-header h3{font-family:var(--font-h);font-size:1.4rem;color:var(--white);letter-spacing:1px;}
+.div-filters{display:flex;gap:.4rem;flex-wrap:wrap;}
+.div-btn{padding:5px 12px;border:1px solid var(--border);color:var(--steel);font-size:.7rem;
+  font-weight:700;letter-spacing:1px;transition:all .2s;border-radius:2px;}
+.div-btn.active,.div-btn:hover{background:rgba(208,28,42,.2);border-color:var(--red);color:var(--white);}
+.teams-scroll{display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;}
+.team-chip{display:flex;align-items:center;gap:.5rem;padding:8px 14px;white-space:nowrap;
+  border:1px solid var(--border);color:var(--steel);font-size:.8rem;font-weight:700;
+  letter-spacing:1px;transition:all .2s;cursor:pointer;flex-shrink:0;border-radius:2px;}
+.team-chip:hover,.team-chip.active{background:rgba(208,28,42,.15);border-color:var(--red);color:var(--white);}
+.team-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* ── SECTION ── */
+.sec{padding:5rem 2rem;}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;}
+.sec-lbl{font-size:.7rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:.4rem;}
+.sec-lbl::before{content:'';width:20px;height:2px;background:var(--gold);display:block;}
+.sec-ttl{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,4rem);color:var(--white);line-height:1;}
+
+/* ── FILTERS BAR ── */
+.filters-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.flt{padding:7px 16px;border:1px solid var(--border);color:var(--steel);font-size:.78rem;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all .2s;border-radius:2px;}
+.flt.active,.flt:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.sort-sel{padding:7px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--steel);font-family:var(--font-b);font-size:.78rem;font-weight:700;
+  letter-spacing:1px;border-radius:2px;outline:none;}
+.sort-sel option{background:var(--navy2);color:var(--cream);}
+.results-count{font-size:.8rem;color:var(--steel);margin-left:auto;}
+
+/* ── PRODUCT GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.4rem;}
+.product-card{background:var(--card);border:1px solid var(--border);overflow:hidden;
+  cursor:pointer;transition:transform .25s,border-color .25s;position:relative;}
+.product-card:hover{transform:translateY(-5px);border-color:rgba(208,28,42,.5);}
+.product-card:hover .pc-overlay{opacity:1;}
+.pc-img{height:200px;position:relative;overflow:hidden;background:var(--navy2);}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.product-card:hover .pc-img img{transform:scale(1.05);}
+.pc-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:5rem;background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));}
+.pc-overlay{position:absolute;inset:0;background:rgba(5,16,31,.7);display:flex;
+  align-items:center;justify-content:center;opacity:0;transition:opacity .25s;}
+.pc-overlay-btn{background:var(--white);color:var(--navy);padding:9px 22px;
+  font-family:var(--font-h);font-size:.95rem;letter-spacing:2px;}
+.pc-badge{position:absolute;top:10px;left:10px;font-size:.62rem;letter-spacing:2px;
+  padding:3px 10px;font-weight:800;text-transform:uppercase;}
+.pc-badge.new{background:var(--gold);color:var(--navy);}
+.pc-badge.sale{background:var(--red);color:var(--white);}
+.pc-badge.hot{background:#ff6b00;color:var(--white);}
+.pc-badge.kr{background:#003478;color:var(--white);}
+.pc-badge.jp{background:#bc002d;color:var(--white);}
+.pc-wish{position:absolute;top:10px;right:10px;font-size:1.1rem;cursor:pointer;
+  transition:transform .2s;filter:grayscale(1);opacity:.5;}
+.pc-wish.liked{filter:none;opacity:1;transform:scale(1.2);}
+.pc-body{padding:1.1rem;}
+.pc-team{font-size:.65rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:.3rem;}
+.pc-name{font-family:var(--font-h);font-size:1.3rem;color:var(--white);line-height:1.1;margin-bottom:.2rem;}
+.pc-local{font-size:.8rem;color:var(--steel);margin-bottom:.7rem;}
+.pc-foot{display:flex;align-items:center;justify-content:space-between;}
+.pc-price{font-family:var(--font-h);font-size:1.5rem;color:var(--gold);}
+.pc-price .old{font-size:.9rem;color:var(--steel);text-decoration:line-through;margin-right:4px;}
+.pc-cart{width:36px;height:36px;background:var(--red);color:var(--white);font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:2px;}
+.pc-cart:hover{background:var(--red2);}
+
+/* Load more */
+.load-more-row{text-align:center;margin-top:3rem;}
+
+/* ── FEATURED BANNER ── */
+.featured-banner{background:linear-gradient(135deg,#0a1a30 0%,#1a0a12 100%);
+  border:1px solid var(--border);padding:3rem;margin:3rem 0;display:grid;
+  grid-template-columns:1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;}
+.featured-banner::before{content:'⚾';position:absolute;right:-20px;bottom:-30px;
+  font-size:12rem;opacity:.04;pointer-events:none;}
+.fb-tag{font-size:.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem;}
+.fb-title{font-family:var(--font-h);font-size:2.5rem;color:var(--white);line-height:1.1;margin-bottom:.5rem;}
+.fb-sub{color:var(--steel);font-size:.9rem;line-height:1.6;max-width:500px;}
+.fb-right{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;}
+.fb-price{font-family:var(--font-h);font-size:3rem;color:var(--gold);}
+.fb-price small{font-size:1.2rem;color:var(--steel);text-decoration:line-through;display:block;text-align:right;}
+
+/* ── REGIONS ── */
+#regions{background:var(--navy2);border-top:1px solid var(--border);}
+.regions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.region-card{border:1px solid var(--border);padding:2.5rem 2rem;position:relative;
+  overflow:hidden;transition:border-color .25s,transform .25s;cursor:default;}
+.region-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+.region-card::after{content:attr(data-flag);position:absolute;right:-12px;top:-12px;
+  font-size:7rem;opacity:.1;pointer-events:none;line-height:1;}
+.rg-name{font-family:var(--font-h);font-size:2.8rem;color:var(--white);margin-bottom:.2rem;}
+.rg-local{font-size:1.3rem;color:var(--gold);margin-bottom:.8rem;}
+.rg-shipping{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--gold);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem;}
+.rg-shipping::before{content:'✓';background:var(--gold);color:var(--navy);
+  width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:900;flex-shrink:0;}
+.rg-desc{font-size:.88rem;color:var(--steel);line-height:1.7;margin-bottom:1rem;}
+.rg-tags{display:flex;gap:.4rem;flex-wrap:wrap;}
+.rg-tag{font-size:.65rem;letter-spacing:1px;border:1px solid var(--border);color:var(--steel);
+  padding:3px 9px;text-transform:uppercase;border-radius:2px;}
+.rg-currencies{margin-top:1rem;display:flex;gap:.5rem;}
+.cur-display{background:rgba(255,255,255,.04);padding:4px 12px;border-radius:2px;
+  font-size:.75rem;color:var(--cream);font-weight:700;}
+
+/* ── NEWSLETTER ── */
+.newsletter{background:linear-gradient(135deg,#150810 0%,#050d1a 50%,#0a1628 100%);
+  padding:6rem 2rem;text-align:center;position:relative;overflow:hidden;
+  border-top:2px solid var(--red);}
+.newsletter::before{content:'⚾';position:absolute;left:-80px;bottom:-60px;font-size:28rem;
+  opacity:.025;pointer-events:none;line-height:1;}
+.nl-title{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,5rem);color:var(--white);margin-bottom:.5rem;}
+.nl-sub{color:var(--steel);font-size:.95rem;max-width:460px;margin:0 auto 2.5rem;line-height:1.7;}
+.nl-form{display:flex;max-width:460px;margin:0 auto;}
+.nl-form input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-right:none;color:var(--white);padding:14px 18px;font-family:var(--font-b);
+  font-size:.9rem;outline:none;}
+.nl-form input::placeholder{color:var(--steel);}
+.nl-form input:focus{border-color:var(--red);}
+.nl-form button{background:var(--red);color:var(--white);padding:14px 28px;
+  font-family:var(--font-h);font-size:1.1rem;letter-spacing:2px;transition:background .2s;}
+.nl-form button:hover{background:var(--red2);}
+.nl-perks{display:flex;justify-content:center;gap:3rem;margin-top:2.5rem;flex-wrap:wrap;}
+.nl-perk{text-align:center;color:var(--steel);font-size:.8rem;}
+.nl-perk span{display:block;font-size:1.8rem;margin-bottom:.3rem;}
+
+/* ── FOOTER ── */
+footer{background:#030b17;border-top:1px solid var(--border);padding:4rem 2rem 2rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem;}
+.footer-brand p{color:var(--steel);font-size:.85rem;line-height:1.7;max-width:240px;margin-top:.8rem;}
+.footer-col h4{font-family:var(--font-h);font-size:1rem;color:var(--white);letter-spacing:2px;
+  margin-bottom:1rem;text-transform:uppercase;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:.5rem;}
+.footer-col ul a{color:var(--steel);font-size:.85rem;transition:color .2s;display:inline-block;}
+.footer-col ul a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-bottom p{color:var(--steel);font-size:.75rem;}
+.crypto-row{display:flex;gap:6px;flex-wrap:wrap;}
+.crypto-chip{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  padding:3px 10px;border-radius:2px;font-size:.68rem;color:var(--steel);font-weight:700;letter-spacing:1px;}
+
+/* ── FADE ANIM ── */
+.fi{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.fi.v{opacity:1;transform:translateY(0);}
+
+/* ── LANGUAGE TEXT ── */
+.t{display:none;}
+body.lang-en .t.en{display:inline;}
+body.lang-jp .t.jp{display:inline;}
+body.lang-kr .t.kr{display:inline;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.footer-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}.hero-r{display:none;}
+  .hero-l{padding:4rem 1.5rem;}
+  nav{padding:0 1rem;gap:1rem;}.nav-links,.nav-search{display:none;}
+  .regions-grid{grid-template-columns:1fr;}
+  .featured-banner{grid-template-columns:1fr;}.fb-right{align-items:flex-start;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .sec{padding:3rem 1rem;}.teams-section{padding:1.5rem 1rem;}
+  .footer-grid{grid-template-columns:1fr;}
+  .nl-form{flex-direction:column;}
+  .nl-form input{border-right:1px solid var(--border);border-bottom:none;}
+}
+</style>
+</head>
+<body class="lang-en">
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <h2>🛒 <span class="t en">YOUR CART</span><span class="t jp">カート</span><span class="t kr">장바구니</span></h2>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="icon">⚾</div>
+      <p><span class="t en">Your cart is empty.<br/>Start shopping!</span><span class="t jp">カートが空です。ショッピングを始めましょう！</span><span class="t kr">장바구니가 비었습니다. 쇼핑을 시작하세요!</span></p>
+    </div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="cart-foot">
+    <div class="currency-row">
+      <button class="cur-btn active" onclick="setCurrency('USD',this)">$ USD</button>
+      <button class="cur-btn" onclick="setCurrency('JPY',this)">¥ JPY</button>
+      <button class="cur-btn" onclick="setCurrency('KRW',this)">₩ KRW</button>
+    </div>
+    <div class="cart-total">
+      <span><span class="t en">TOTAL</span><span class="t jp">合計</span><span class="t kr">합계</span></span>
+      <strong id="cartTotal">$0.00</strong>
+    </div>
+    <button class="cart-checkout" onclick="checkout()">
+      <span class="t en">CHECKOUT →</span><span class="t jp">チェックアウト →</span><span class="t kr">결제하기 →</span>
+    </button>
+    <div class="pay-methods">
+      <span class="pay-chip">VISA</span><span class="pay-chip">MC</span><span class="pay-chip">AMEX</span>
+      <span class="pay-chip">PayPal</span><span class="pay-chip">카카오Pay</span><span class="pay-chip">PayPay</span>
+      <span class="pay-chip">₿ BTC</span><span class="pay-chip">ETH</span><span class="pay-chip">USDT</span>
+    </div>
+  </div>
+</aside>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-grid">
+      <div class="modal-img" id="modalImg"></div>
+      <div class="modal-info" id="modalInfo"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<nav>
+  <div class="nav-logo">
+    <div class="ball-icon"></div>
+    GRAND<span>SLAM</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#shop"><span class="t en">Shop</span><span class="t jp">ショップ</span><span class="t kr">쇼핑</span></a></li>
+    <li><a href="#regions"><span class="t en">Shipping</span><span class="t jp">配送</span><span class="t kr">배송</span></a></li>
+    <li><a href="#newsletter"><span class="t en">Deals</span><span class="t jp">セール</span><span class="t kr">딜</span></a></li>
+  </ul>
+  <div class="nav-search">
+    <input type="text" id="searchInput" placeholder="Search jerseys, caps, bats…" oninput="doSearch()"/>
+  </div>
+  <div class="lang-sw">
+    <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+    <button class="lang-btn" onclick="setLang('jp',this)">JP</button>
+    <button class="lang-btn" onclick="setLang('kr',this)">KR</button>
+  </div>
+  <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-cnt" id="cartCnt">0</span></button>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripes"></div>
+  <div class="hero-l fi">
+    <div class="hero-tag"><span class="t en">Official MLB Merchandise Store</span><span class="t jp">MLB公式グッズストア</span><span class="t kr">MLB 공식 굿즈 스토어</span></div>
+    <h1 class="hero-h1">
+      <span class="t en">GRAND<br/><span class="r">SLAM</span><br/><span class="o">SHOP</span></span>
+      <span class="t jp">グランド<br/><span class="r">スラム</span><br/><span class="o">ショップ</span></span>
+      <span class="t kr">그랜드<br/><span class="r">슬램</span><br/><span class="o">샵</span></span>
+    </h1>
+    <p class="hero-sub">
+      <span class="t en">50+ authentic MLB products. Bats, gloves, jerseys, caps, full kits & collectibles — delivered to USA, Japan & Korea.</span>
+      <span class="t jp">50以上の正規MLBグッズ。バット・グローブ・ジャージ・キャップ・フルキット。USA・日本・韓国へ発送。</span>
+      <span class="t kr">50개 이상의 정품 MLB 상품. 배트, 글러브, 저지, 모자, 풀킷 — 미국, 일본, 한국 배송.</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="#shop" class="btn-r"><span class="t en">Shop Now</span><span class="t jp">今すぐ購入</span><span class="t kr">지금 쇼핑</span></a>
+      <a href="#regions" class="btn-o"><span class="t en">Shipping Info</span><span class="t jp">配送情報</span><span class="t kr">배송 정보</span></a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-n">30</span><span class="stat-l"><span class="t en">MLB Teams</span><span class="t jp">チーム</span><span class="t kr">팀</span></span></div>
+      <div><span class="stat-n">50+</span><span class="stat-l"><span class="t en">Products</span><span class="t jp">商品</span><span class="t kr">상품</span></span></div>
+      <div><span class="stat-n">3</span><span class="stat-l"><span class="t en">Countries</span><span class="t jp">配送国</span><span class="t kr">국가</span></span></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="hero-ball-wrap">
+      <svg class="hero-ball-svg" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ballGrad" cx="38%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#f0ece2"/>
+            <stop offset="100%" stop-color="#c8bfb0"/>
+          </radialGradient>
+          <filter id="bshadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="20" stdDeviation="25" flood-color="rgba(0,0,0,0.6)"/>
+          </filter>
+        </defs>
+        <circle cx="180" cy="180" r="160" fill="url(#ballGrad)" filter="url(#bshadow)"/>
+        <path d="M 60 120 C 80 140, 90 160, 85 180 C 80 200, 70 215, 85 235" fill="none" stroke="#d81c2a" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 55 125 C 75 145, 85 165, 80 185 C 75 205, 65 220, 80 240" fill="none" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5,4"/>
+        <path d="M 62 135 L 75 130 M 70 150 L 85 145 M 72 170 L 88 165 M 70 190 L 85 185 M 62 210 L 75 205" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 300 120 C 280 140, 270 160, 275 180 C 280 200, 290 215, 275 235" fill="none" stroke="#d81c2a" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 305 125 C 285 145, 275 165, 280 185 C 285 205, 295 220, 280 240" fill="none" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5,4"/>
+        <path d="M 298 135 L 285 130 M 290 150 L 275 145 M 288 170 L 272 165 M 290 190 L 275 185 M 298 210 L 285 205" stroke="#d81c2a" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="badge-float t">OFFICIAL GEAR</div>
+      <div class="badge-float b">CUSTOM PRINTS</div>
+    </div>
+  </div>
+</section>
+
+<section id="shop" class="sec">
+  <div class="sec-hd">
+    <div>
+      <div class="sec-lbl"><span class="t en">Our Collection</span><span class="t jp">私たちのコレクション</span><span class="t kr">우리의 컬렉션</span></div>
+      <h2 class="sec-ttl"><span class="t en">PRO SHOP</span><span class="t jp">プロショップ</span><span class="t kr">프로 샵</span></h2>
+    </div>
+  </div>
+  <div class="products-grid" id="productsGrid">
+    </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3 style="color:var(--white);font-family:var(--font-h);font-size:1.5rem;">GRAND<span style="color:var(--red);">SLAM</span></h3>
+      <p>Your premium destination for authentic baseball merchandise worldwide.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 GrandSlam Shop. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // State
+  let cart = [];
+  let currentLang = 'en';
+  let currentCur = 'USD';
+  const rates = { USD: 1, JPY: 150, KRW: 1300 };
+  const curSymbols = { USD: '$', JPY: '¥', KRW: '₩' };
+
+  // Mock Products with Images
+  const products = [
+    {
+      id: 1, team: 'NYY', name: 'Elite Home Jersey', localName: 'ニューヨーク・ヤンキース', price: 129.99, 
+      img: 'https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=600&auto=format&fit=crop',
+      desc: 'Authentic on-field home jersey. Moisture-wicking fabric.', customizable: true
+    },
+    {
+      id: 2, team: 'LAD', name: 'Pro Player Cap', localName: 'ロサンゼルス・ドジャース', price: 39.99,
+      img: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=600&auto=format&fit=crop',
+      desc: 'Fitted 59FIFTY structured cap.', customizable: false
+    },
+    {
+      id: 3, team: 'ALL', name: 'Maple Wood Bat', localName: 'メープルウッドバット', price: 149.99,
+      img: 'https://images.unsplash.com/photo-1593013912165-24e52f533440?q=80&w=600&auto=format&fit=crop',
+      desc: 'Professional grade maple wood. Balanced swing weight.', customizable: true
+    }
+  ];
+
+  // Render Products
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = products.map(p => `
+      <div class="product-card" onclick="openModal(${p.id})">
+        <div class="pc-img"><img src="${p.img}" alt="${p.name}"/></div>
+        <div class="pc-body">
+          <div class="pc-team">${p.team}</div>
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-price">${curSymbols[currentCur]}${(p.price * rates[currentCur]).toFixed(2)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Modal Logic
+  function openModal(id) {
+    const p = products.find(x => x.id === id);
+    if(!p) return;
+    
+    document.getElementById('modalImg').innerHTML = `<img src="${p.img}" alt=""/>`;
+    
+    let customHtml = p.customizable ? `
+      <div style="margin: 10px 0;">
+        <label style="color:var(--gold); font-size:0.8rem; letter-spacing:1px;">ADD CUSTOM NAME/NUMBER (+$15.00)</label>
+        <input type="text" id="customText" placeholder="E.g., SMITH 99" style="width:100%; padding:10px; margin-top:5px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:white; outline:none;" />
+      </div>
+    ` : '';
+
+    document.getElementById('modalInfo').innerHTML = `
+      <div class="modal-team">${p.team}</div>
+      <div class="modal-name">${p.name}</div>
+      <div class="modal-desc">${p.desc}</div>
+      ${customHtml}
+      <div class="modal-price">${curSymbols[currentCur]}${(p.price * rates[currentCur]).toFixed(2)}</div>
+      <button class="modal-add" onclick="addToCart(${p.id}, document.getElementById('customText')?.value)">ADD TO CART</button>
+    `;
+    
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); }
+  function closeModal(e) { if(e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+
+  // Cart Logic
+  function toggleCart() {
+    document.getElementById('cartSidebar').classList.toggle('open');
+    document.getElementById('cartOverlay').classList.toggle('open');
+    document.body.classList.toggle('cart-open');
+  }
+
+  function addToCart(id, customText) {
+    const p = products.find(x => x.id === id);
+    const price = customText ? p.price + 15 : p.price;
+    const itemName = customText ? `${p.name} (Custom: ${customText})` : p.name;
+    
+    const existing = cart.find(x => x.name === itemName);
+    if(existing) { existing.qty += 1; } 
+    else { cart.push({ ...p, price, name: itemName, qty: 1 }); }
+    
+    updateCart();
+    closeModalDirect();
+    showToast("Added to Cart!");
+  }
+
+  function updateCart() {
+    document.getElementById('cartCnt').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+    const body = document.getElementById('cartItems');
+    const empty = document.getElementById('cartEmpty');
+    
+    if(cart.length === 0) {
+      body.innerHTML = '';
+      empty.classList.remove('hidden');
+      document.getElementById('cartTotal').innerText = `${curSymbols[currentCur]}0.00`;
+      return;
+    }
+    
+    empty.classList.add('hidden');
+    let total = 0;
+    
+    body.innerHTML = cart.map((item, i) => {
+      const itemTotal = item.price * rates[currentCur] * item.qty;
+      total += itemTotal;
+      return `
+        <div class="cart-item">
+          <div class="cart-item-img"><img src="${item.img}" style="width:100%; height:100%; object-fit:cover;"/></div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${curSymbols[currentCur]}${itemTotal.toFixed(2)}</div>
+            <div class="cart-qty">
+              <span>Qty: ${item.qty}</span>
+              <button class="cart-remove" onclick="cart.splice(${i}, 1); updateCart();">🗑</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    document.getElementById('cartTotal').innerText = `${curSymbols[currentCur]}${total.toFixed(2)}`;
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').innerText = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // Init
+  renderProducts();
+</script>
+</body>
+</html>
